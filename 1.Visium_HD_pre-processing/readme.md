@@ -34,4 +34,28 @@ This Rscript, [`Spatial_Deconvolution_Clustering_Pipeline.R`](./Tissue2_celltype
 - Run in `doublet` mode
 - Thresholds: `UMI_min = 40`, `counts_MIN = 10`
 
+5. Unsupervised Clustering (Seurat)
+- Convert RCTD output to Seurat
+- Normalize → PCA → Leiden clustering (`res = 0.17`) → UMAP
+  * Vannan et al. selected 12 clusters (CNiche & TNiche)
+    
+6. Normalize & Rotate Coordinates
+- Rotate 90° clockwise for orientation correction (To adjust the coordinates/image to match the Xenium orientation)
+- Normalize x and y coordinates to [0, 1] scale (For downstream analysis. e.g., Visium-Xenium alignment)
+
+7. Update RCTD Object
+- Replace coordinates in `@spatialRNA@coords`
+- Add Seurat clusters and UMAP coordinates to `@results_df`
+
+8. Save Processed Object
+- Save RCTD + Seurat integrated object as `Visium2.RData`
+
+9. Export Metadata (JSON)
+Outputs:
+- Spot class counts (singlet, doublet, reject)
+- Cell type labels
+- Seurat clusters
+- Coordinate ranges
+- Plotting suggestions (coloring, axes, default view)
+
 
