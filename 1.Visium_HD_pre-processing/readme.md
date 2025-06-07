@@ -11,7 +11,7 @@ Here we describe a series of analyses of Visium HD cell type annotation.
 
 
 
-
+---
 #### 1. Subset (Python)
 This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](./Visium_HD_Crop_high_resolution_microsope_image.ipynb), demonstrates how to:
 - Load and visualize high-resolution microscope `.tif` images.
