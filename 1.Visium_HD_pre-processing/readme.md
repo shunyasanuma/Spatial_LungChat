@@ -3,7 +3,7 @@ Here we describe a series of analyses of Visium HD cell type annotation.
 
 ### Outline
 #### 1. Subset
-This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](./1.1.Subset/01.Crop_high_resolution_microsope_image.ipynb), demonstrates how to:
+This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](1.Visium_HD_pre-processing/Visium_HD_Crop_high_resolution_microsope_image.ipynb), demonstrates how to:
 - Load and visualize high-resolution microscope `.tif` images.
 - Crop regions of interest (ROIs) based on coordinate inputs.
 - Save the cropped output for downstream spatial analysis (e.g., Cell type annotation, Visium HD - Xenium alignment).
