@@ -1,5 +1,5 @@
 ## Spatial LungChat Outline
-### 1. Visium HD pre-processing
+### [1. Visium HD pre-processing](1.Visium_HD_pre-processing/readme.md)
 ### 2. Xenium pre-processing
 ### 3. Visium HD - Xenium alignment
 ### 4. Spatial scTriangulate
