@@ -4,6 +4,9 @@ Here we describe a series of analyses of Visium HD cell type annotation.
 ### Outline
 [1.1. Subset](#1-subset-python)
 
+[1.2. Robust Cell Type Decomposition](#2-robust-cell-type-decomposition-cell-type-annotation-r)
+
+
 
 
 
