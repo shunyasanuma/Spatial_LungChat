@@ -8,7 +8,7 @@ This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](./Visium_H
 - Crop regions of interest (ROIs) based on coordinate inputs.
 - Save the cropped output for downstream spatial analysis (e.g., Cell type annotation, Visium HD - Xenium alignment).
 
-##### Required input files
+#### Required input files
 - High resolution H&E tiff
 
 
