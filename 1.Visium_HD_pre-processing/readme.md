@@ -7,4 +7,3 @@ This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](./Visium_H
 - Load and visualize high-resolution microscope `.tif` images.
 - Crop regions of interest (ROIs) based on coordinate inputs.
 - Save the cropped output for downstream spatial analysis (e.g., Cell type annotation, Visium HD - Xenium alignment).
-- Optionally, batch-process multiple crops with consistent metadata.
