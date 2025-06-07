@@ -13,4 +13,4 @@ This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](./Visium_H
 
 
 #### 2. Robust Cell Type Decomposition, Cell type annotation (R)
-This script processes Visium HD binned spatial transcriptomics data from human lung tissue to perform spatial deconvolution, clustering, coordinate normalization, and JSON export for downstream applications like visualization or LLM prompting.
+This Rscript, [`Spatial_Deconvolution_Clustering_Pipeline.R`](./Tissue2_celltype_annotation.R) processes Visium HD binned spatial transcriptomics data from human lung tissue to perform spatial deconvolution, clustering, coordinate normalization, and JSON export for downstream applications like visualization or LLM prompting.
