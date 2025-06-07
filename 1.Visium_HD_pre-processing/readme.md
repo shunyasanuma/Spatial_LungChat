@@ -68,4 +68,21 @@ Outputs:
 - Coordinate ranges
 - Plotting suggestions (coloring, axes, default view)
 
+Required Inputs
+| Input                        | Description                                                                            |
+| ---------------------------- | -------------------------------------------------------------------------------------- |
+| `matrix.mtx.gz`              | Sparse gene expression matrix (filtered) from 8 µm binned Visium HD output             |
+| `barcodes.tsv.gz`            | Spot barcodes corresponding to matrix columns                                          |
+| `features.tsv.gz`            | Gene metadata (ENSEMBL ID and gene symbols)                                            |
+| `tissue_positions.parquet`   | Pixel-level coordinates of each spot from Space Ranger                                 |
+| `scRNA-seq reference (.rds)` | Preprocessed single-cell reference (e.g., LungMAP, with `celltype_level1` annotations) |
+| `ROI pixel boundaries`       | Bounding box to subset spatial region of interest (manually defined)                   |
+
+Output Files
+| Output                                | Format                          | Description                                                                    |
+| ------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------ |
+| `Visium2.RData`                       | RData                           | Full RCTD object with normalized coordinates and Seurat clustering added       |
+| `Visium2.json`                        | JSON                            | Summary metadata for visualization, downstream LLM-based plotting, or web apps |
+| `seurat_clusters`, `UMAP_1`, `UMAP_2` | In `Visium2@results$results_df` | Clustering and UMAP coordinates appended to RCTD results                       |
+| `SpatialRNA object`                   | In `Visium2@spatialRNA`         | Coordinates rotated and normalized (\[0, 1] scale) for spatial plotting        |
 
