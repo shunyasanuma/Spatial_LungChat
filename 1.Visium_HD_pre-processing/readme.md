@@ -1,4 +1,4 @@
-## 1. Visium_HD_pre-processing
+## 1. Visium HD pre-processing
 Here we describe a series of analyses of Visium HD cell type annotation.
 
 ### Outline
