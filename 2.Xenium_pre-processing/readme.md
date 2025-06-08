@@ -17,7 +17,27 @@ This Jupyter Notebook, [`Crop_high_resolution_DAPI_image.ipynb`](./Xenium_Crop_h
 #### Required input files
 - High resolution DAPI tiff. 
 - DAPI image from Xenium is typically located under: `morphology_focus/morphology_focus_000*.ome.tif`
+---
 
 #### 2. Robust Cell Type Decomposition, Cell type annotation (R)
 This R script [`Spatial_Deconvolution_Clustering_Pipeline.R`](./Tissue2_celltype_annotation.R) performs cell type deconvolution, spatial subsetting, unsupervised clustering, and metadata annotation for Xenium spatial transcriptomics data using spacexr (RCTD) and Seurat.
+
+##### Workflow Steps
+1. Load & Preprocess Xenium Counts
+- Load sparse matrix (`matrix.mtx.gz`, `barcodes.tsv.gz`, `features.tsv.gz`)
+- Map ENSEMBL IDs to gene symbols
+- Remove duplicated or missing gene entries
+
+2. Load & Crop Cell Boundaries
+- Read `cell_boundaries.parquet`
+- Subset a region of interest (ROI) using pixel-based crop bounds
+- Convert pixel to micron scale using `microns_per_pixel = 0.2125`
+
+
+
+
+
+
+
+
 
