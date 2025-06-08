@@ -4,6 +4,8 @@ Here we describe a series of analyses of Xenium cell type annotation.
 ### Outline
 [2.1. Subset](#1-subset-python)
 
+[2.2. Robust Cell Type Decomposition](#2-robust-cell-type-decomposition-cell-type-annotation-r)
+
 
 ---
 #### 1. Subset (Python)
@@ -15,3 +17,7 @@ This Jupyter Notebook, [`Crop_high_resolution_DAPI_image.ipynb`](./Xenium_Crop_h
 #### Required input files
 - High resolution DAPI tiff. 
 - DAPI image from Xenium is typically located under: `morphology_focus/morphology_focus_000*.ome.tif`
+
+#### 2. Robust Cell Type Decomposition, Cell type annotation (R)
+This R script [`Spatial_Deconvolution_Clustering_Pipeline.R`](./Tissue2_celltype_annotation.R) performs cell type deconvolution, spatial subsetting, unsupervised clustering, and metadata annotation for Xenium spatial transcriptomics data using spacexr (RCTD) and Seurat.
+
