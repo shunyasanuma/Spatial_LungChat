@@ -12,3 +12,6 @@ This Jupyter Notebook, [`Crop_high_resolution_DAPI_image.ipynb`](./Xenium_Crop_h
 - Crop regions of interest (ROIs) based on coordinate inputs.
 - Save the cropped output for downstream spatial analysis (e.g., Cell type annotation, Visium HD - Xenium alignment).
 
+#### Required input files
+- High resolution DAPI tiff. 
+- DAPI image from Xenium is typically located under: `morphology_focus/morphology_focus_000*.ome.tif`
