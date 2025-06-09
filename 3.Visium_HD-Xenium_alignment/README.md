@@ -10,8 +10,6 @@ To identify the most reliable cell-type annotations by:
 
 #### Script
 - [`Rmarkdown`](./Alignment.md)
-- [`Kinitted Rmarkdown with figures`](./Alignment.html)
-
-[Alignment.html](https://shunyasanuma.github.io/Spatial_LungChat/Alignment.html)
+- [`Rmarkdown with figures (html format)`](https://shunyasanuma.github.io/Spatial_LungChat/Alignment.html)
 
 
