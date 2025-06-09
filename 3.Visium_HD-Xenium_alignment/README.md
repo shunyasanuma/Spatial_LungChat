@@ -12,5 +12,5 @@ To identify the most reliable cell-type annotations by:
 - [`Rmarkdown`](./Alignment.md)
 - [`Kinitted Rmarkdown with figures`](./Alignment.html)
 
-View the rendered alignment analysis: [Alignment.md](./Alignment.md)
-View the source RMarkdown: [Alignment.Rmd](./Alignment.Rmd)
+![](Alignment_files/figure-gfm/unnamed-chunk-6-1.png)
+
