@@ -9,5 +9,5 @@ To identify the most reliable cell-type annotations by:
 - Prepareing input files for spatial scTriangulate to optimize annotations across platforms
 
 #### Script
-- [`Rmarkdown`](./Alignment.Rmd)
+- [`Rmarkdown`](./Alignment.md)
 - [`Kinitted Rmarkdown with figures`](./Alignment.html)
