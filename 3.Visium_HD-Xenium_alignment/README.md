@@ -11,6 +11,23 @@ To identify the most reliable cell-type annotations by:
 #### Script
 - [`Rmarkdown`](./Alignment.md)
 - [`Rmarkdown with figures (html format)`](https://shunyasanuma.github.io/Spatial_LungChat/Alignment.html)
+---
+
+##### Workflow Steps
+1. Extracting Singlet Coordinates
+To ensure high-confidence cell mapping, only RCTD-classified singlets are used from each platform:
+- From Visium2@results$results_df and Xenium2@results$results_df, spots with spot_class == "singlet" are extracted.
+- Raw spatial coordinates (`x`, `y`) for those singlet spots are retained from:
+  * `Visium2@spatialRNA@coords`
+  *  `Xenium2@spatialRNA@coords`
+
+
+
+
+
+
+
+
 
 
 
