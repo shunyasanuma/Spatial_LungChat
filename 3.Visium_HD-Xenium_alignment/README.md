@@ -7,6 +7,10 @@ To identify the most reliable cell-type annotations by:
 - Evaluating cross-platform transcript concordance
 - Integrating metadata and RCTD results
 - Prepareing input files for spatial scTriangulate to optimize annotations across platforms
+![Side-by-side figure](./Alignment_files/figure-gfm/unnamed-chunk-3-1.png)
+![Alignment figure](.//Alignment_files/figure-gfm/unnamed-chunk-4-1.png)
+
+
 
 #### Script
 - [`Rmarkdown`](./Alignment.md)
@@ -21,8 +25,13 @@ To ensure high-confidence cell mapping, only RCTD-classified singlets are used f
   * `Visium2@spatialRNA@coords`
   *  `Xenium2@spatialRNA@coords`
 
+2. Manual Alignment of Xenium to Visium Space
+Due to imaging differences between Xenium and Visium HD (e.g., rotation, mirroring), direct spatial overlay is not possible. Orientation was corrected in a previous step.
 
-
+Manual alignment is performed by:
+- Rotating, scaling, and mirroring Xenium spatial coordinates to approximate Visium's spatial coordinate system.
+- Resulting aligned coordinates (`X`, `Y`) are stored in `xenium_df` and `visium_df`.
+- These aligned coordinates enable more accurate 1:1 spatial comparisons across platforms.
 
 
 
