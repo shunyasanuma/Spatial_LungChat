@@ -12,5 +12,6 @@ To identify the most reliable cell-type annotations by:
 - [`Rmarkdown`](./Alignment.md)
 - [`Kinitted Rmarkdown with figures`](./Alignment.html)
 
-![](Alignment_files/figure-gfm/unnamed-chunk-6-1.png)
+[Alignment.html](https://shunyasanuma.github.io/Spatial_LungChat/Alignment.html)
+
 
