@@ -1,0 +1,564 @@
+
+``` r
+# Core analysis
+library(Seurat)
+library(Matrix)
+library(dplyr)
+library(ggplot2)
+library(cowplot)
+
+# Spatial deconvolution
+library(spacexr)
+```
+
+#### Load RCTD Objects
+
+``` r
+load("/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Output/Visium_HD/GSM8509590/02.RCTD/UMI_40/Visium2.RData")
+load("/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Output/Xenium/GSE250346/02.RCTD/UMI_40/Xenium2.RData")
+load("/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Output/Visium_HD/GSM8509590/02.RCTD/UMI_40/Visium2_author_based.RData")
+Manuscript <- readRDS("/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Input/GSE250346/GSE250346_Seurat_GSE250346_CORRECTED_SEE_RDS_README_082024.rds")
+```
+
+#### Extract Singlet Coordinates
+
+``` r
+df_visium <- Visium2@results$results_df %>% filter(spot_class == "singlet")
+df_xenium <- Xenium2@results$results_df %>% filter(spot_class == "singlet")
+
+df_visium$X <- Visium2@spatialRNA@coords[rownames(df_visium), "x"]
+df_visium$Y <- Visium2@spatialRNA@coords[rownames(df_visium), "y"]
+df_xenium$X <- Xenium2@spatialRNA@coords[rownames(df_xenium), "x"]
+df_xenium$Y <- Xenium2@spatialRNA@coords[rownames(df_xenium), "y"]
+```
+
+### Side-by-Side Plot: Visium vs. Xenium Singlets
+
+``` r
+# Add platform labels
+df_visium$Platform <- "Visium"
+df_xenium$Platform <- "Xenium"
+
+# Shift Xenium to the right for side-by-side display
+df_xenium_side_by_side <- df_xenium %>%
+  mutate(X = X + 1.2)
+
+# Combine
+df_combined_side_by_side <- bind_rows(df_visium, df_xenium_side_by_side)
+
+# Plot
+ggplot(df_combined_side_by_side, aes(x = X, y = Y, color = Platform)) +
+  geom_point(size = 0.4) +
+  scale_color_manual(values = c("Visium" = "blue", "Xenium" = "red")) +
+  coord_fixed() +
+  theme_minimal(base_size = 14) +
+  labs(
+    title = "Side-by-Side View of Visium2 and Xenium2 Singlets",
+    x = "Normalized X", y = "Normalized Y", color = "Platform"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.major = element_line(color = "gray80"),
+    legend.position = "right"
+  ) +
+  annotate("text", x = 0.5, y = 1.05, label = "Visium", size = 5, fontface = "bold") +
+  annotate("text", x = 1.7, y = 1.05, label = "Xenium", size = 5, fontface = "bold")
+```
+
+![](/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Script/Comparison/GSM8509590_GSE250346/Alignment/Output/Alignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+#### Manual Alignment of Xenium to Visium & Combine and Plot
+
+``` r
+# Add platform labels
+df_visium$Platform <- "Visium"
+df_xenium$Platform <- "Xenium"
+
+# Copy and transform Xenium for alignment
+df_xenium_aligned <- df_xenium
+df_xenium_aligned$X <- df_xenium_aligned$X * 1.17 - 0.024
+df_xenium_aligned$Y <- df_xenium_aligned$Y * 1.02 - 0.02
+
+# Combine
+df_combined_aligned <- bind_rows(df_visium, df_xenium_aligned)
+
+# Plot
+p_alignment <- ggplot(df_combined_aligned, aes(x = X, y = Y, color = Platform)) +
+  geom_point(size = 0.4) +
+  scale_color_manual(values = c("Visium" = "blue", "Xenium" = "red")) +
+  coord_fixed() +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "right",
+    plot.title = element_text(size = 18, face = "bold", hjust = 0.5),
+    panel.grid.major = element_line(color = "gray80", size = 0.4),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "Aligned Visium2 (blue) and Xenium2 (red) - UMI > 40",
+    color = "Platform"
+  ) +
+  guides(color = guide_legend(override.aes = list(size = 3)))
+
+print(p_alignment)
+```
+
+![](/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Script/Comparison/GSM8509590_GSE250346/Alignment/Output/Alignment_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+#### Nearest Neighbor Mapping: Xenium → Visium
+
+``` r
+# -------------------------------
+# Libraries
+# -------------------------------
+library(FNN)
+library(dplyr)
+
+# -------------------------------
+# Step 1: Prepare aligned coordinates
+# -------------------------------
+# Use manually aligned Xenium coordinates for accurate 1-to-1 spatial matching
+xenium_df <- df_xenium_aligned
+visium_df <- df_visium  # Visium already normalized
+
+# Extract 2D coordinates
+xenium_coords <- xenium_df[, c("X", "Y")]
+visium_coords <- visium_df[, c("X", "Y")]
+
+# -------------------------------
+# Step 2: Find nearest Visium neighbor for each Xenium spot
+# -------------------------------
+nn_assignment <- get.knnx(visium_coords, xenium_coords, k = 1)
+assigned_indices <- nn_assignment$nn.index[, 1]
+
+# Map Xenium barcodes to matched Visium barcodes
+assigned_visium_spot_id <- rownames(visium_coords)[assigned_indices]
+names(assigned_visium_spot_id) <- rownames(xenium_coords)
+
+# -------------------------------
+# Step 3: Save alignment map as data.frame
+# -------------------------------
+alignment_df <- data.frame(
+  Xenium_ID = names(assigned_visium_spot_id),
+  Visium_ID = unname(assigned_visium_spot_id),
+  stringsAsFactors = FALSE
+)
+
+
+# -----------------------------------------
+# Step 4: Save to CSV
+# -----------------------------------------
+# write.csv(
+#   alignment_df,
+#   "/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Output/Comparison/GSM8509590_GSE250346/Alignment/All/Tissue2_xenium_visium_alignment.csv",
+#   row.names = FALSE
+# )
+```
+
+#### Alignment Quality Evaluation
+
+##### Plots scatterplots (log1p-transformed) for these top 3 genes.
+
+``` r
+# -------------------------------
+# Step 1: Extract raw count matrices & Get intersecting genes
+# -------------------------------
+expr_xenium <- Xenium2@spatialRNA@counts
+expr_visium <- Visium2@spatialRNA@counts
+
+# -------------------------------
+# Step 1: Get intersecting genes
+# -------------------------------
+common_genes <- intersect(rownames(expr_xenium), rownames(expr_visium))
+
+# -------------------------------
+# Step 2: Compute Pearson correlation for all shared genes
+# -------------------------------
+cor_values <- sapply(common_genes, function(gene) {
+  xen_vec <- expr_xenium[gene, names(assigned_visium_spot_id)]
+  vis_vec <- expr_visium[gene, assigned_visium_spot_id]
+  cor(log1p(as.numeric(xen_vec)), log1p(as.numeric(vis_vec)), method = "pearson")
+})
+```
+
+    ## Warning in cor(log1p(as.numeric(xen_vec)), log1p(as.numeric(vis_vec)), method = "pearson"): the standard deviation is zero
+    ## Warning in cor(log1p(as.numeric(xen_vec)), log1p(as.numeric(vis_vec)), method = "pearson"): the standard deviation is zero
+    ## Warning in cor(log1p(as.numeric(xen_vec)), log1p(as.numeric(vis_vec)), method = "pearson"): the standard deviation is zero
+    ## Warning in cor(log1p(as.numeric(xen_vec)), log1p(as.numeric(vis_vec)), method = "pearson"): the standard deviation is zero
+
+``` r
+# -------------------------------
+# Step 3: Select top 3 genes by correlation
+# -------------------------------
+top_genes <- names(sort(cor_values, decreasing = TRUE))[1:3]
+
+# -------------------------------
+# Step 4: Generate scatterplots
+# -------------------------------
+plot_list <- list()
+
+for (gene in top_genes) {
+  xenium_expr_vec <- expr_xenium[gene, names(assigned_visium_spot_id)]
+  visium_expr_vec <- expr_visium[gene, assigned_visium_spot_id]
+
+  df_gene <- data.frame(
+    Xenium_log = log1p(as.numeric(xenium_expr_vec)),
+    Visium_log = log1p(as.numeric(visium_expr_vec)),
+    Gene = gene
+  )
+
+  pearson_cor <- cor(df_gene$Xenium_log, df_gene$Visium_log, method = "pearson")
+
+  p <- ggplot(df_gene, aes(x = Visium_log, y = Xenium_log)) +
+    geom_point(alpha = 0.4, color = "blue", size = 1) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.8) +
+    theme_minimal(base_size = 14) +
+    labs(
+      title = paste0(gene, " (log1p): r = ", round(pearson_cor, 2)),
+      x = "Visium Expression (log1p)",
+      y = "Xenium Expression (log1p)"
+    )
+
+  plot_list[[gene]] <- p
+}
+
+# -------------------------------
+# Step 5: Display plots
+# -------------------------------
+library(cowplot)
+plot_grid(plotlist = plot_list, ncol = 2)
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+    ## `geom_smooth()` using formula = 'y ~ x'
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Script/Comparison/GSM8509590_GSE250346/Alignment/Output/Alignment_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+##### Line plot showing the Pearson correlation (y-axis) versus the number of top aligned spot pairs (x-axis) ranked by absolute difference in expression for the most correlated gene (top_gene).
+
+``` r
+library(ggplot2)
+
+# Select top gene
+top_gene <- top_genes[1]
+
+# Extract aligned expression
+xen_vec <- expr_xenium[top_gene, names(assigned_visium_spot_id)]
+vis_vec <- expr_visium[top_gene, assigned_visium_spot_id]
+
+# Log1p transform
+xen_log <- log1p(as.numeric(xen_vec))
+vis_log <- log1p(as.numeric(vis_vec))
+
+# Absolute difference
+abs_diff <- abs(xen_log - vis_log)
+
+# Sort by similarity (smallest error first)
+sorted_idx <- order(abs_diff)
+xen_log_sorted <- xen_log[sorted_idx]
+vis_log_sorted <- vis_log[sorted_idx]
+
+# Evaluate correlation at increasing N
+n_spots <- length(xen_log_sorted)
+step_size <- 50  # you can tune this
+top_n_values <- seq(step_size, n_spots, by = step_size)
+cor_vals <- sapply(top_n_values, function(n) {
+  cor(xen_log_sorted[1:n], vis_log_sorted[1:n], method = "pearson")
+})
+
+# Build dataframe for plotting
+cor_df <- data.frame(
+  Top_N_Spots = top_n_values,
+  Pearson_Correlation = cor_vals
+)
+
+# Plot
+ggplot(cor_df, aes(x = Top_N_Spots, y = Pearson_Correlation)) +
+  geom_line(size = 1, color = "darkred") +
+  geom_point(size = 2, color = "black") +
+  geom_hline(yintercept = 0.9, linetype = "dashed", color = "red", linewidth = 0.8) +
+  labs(
+    title = paste("Correlation vs. Top N (", top_gene, ")", sep = ""),
+    x = "Top N Paired Spots (smallest abs diff)",
+    y = "Pearson Correlation"
+  ) +
+  theme_minimal(base_size = 14)
+```
+
+![](/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Script/Comparison/GSM8509590_GSE250346/Alignment/Output/Alignment_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+# -------------------------------
+# Step 1: Define genes and validate their presence
+# -------------------------------
+genes_to_plot <- top_gene  # Can also be a vector of genes
+
+# Ensure all genes exist in both matrices
+missing_genes <- setdiff(genes_to_plot, intersect(rownames(expr_xenium), rownames(expr_visium)))
+if (length(missing_genes) > 0) {
+  stop("The following gene(s) are missing in one or both datasets: ", paste(missing_genes, collapse = ", "))
+}
+
+# -------------------------------
+# Step 2: Select top N most similar spot pairs by abs_diff
+# -------------------------------
+top_n <- 7500
+xenium_ids <- alignment_df$Xenium_ID
+visium_ids <- alignment_df$Visium_ID
+top_idx <- order(abs_diff)[1:top_n]
+top_xenium_ids <- xenium_ids[top_idx]
+top_visium_ids <- visium_ids[top_idx]
+
+# -------------------------------
+# Step 3: Keep only pairs present in both expression matrices
+# -------------------------------
+valid_mask <- top_xenium_ids %in% colnames(expr_xenium) &
+              top_visium_ids %in% colnames(expr_visium)
+
+xenium_ids_subset <- top_xenium_ids[valid_mask]
+visium_ids_subset <- top_visium_ids[valid_mask]
+
+cat("Valid matched pairs used for plotting:", length(xenium_ids_subset), "\n")
+```
+
+    ## Valid matched pairs used for plotting: 7500
+
+``` r
+# -------------------------------
+# Step 4: Generate scatter plots of log1p expression
+# -------------------------------
+plot_list <- lapply(genes_to_plot, function(gene) {
+  # Extract and transform expression
+  xen_vec <- expr_xenium[gene, xenium_ids_subset]
+  vis_vec <- expr_visium[gene, visium_ids_subset]
+  
+  df_gene <- data.frame(
+    Xenium_log = log1p(as.numeric(xen_vec)),
+    Visium_log = log1p(as.numeric(vis_vec)),
+    Gene = gene
+  )
+  
+  # Compute Pearson correlation
+  r_val <- cor(df_gene$Xenium_log, df_gene$Visium_log, method = "pearson")
+  
+  # Build scatter plot
+  ggplot(df_gene, aes(x = Visium_log, y = Xenium_log)) +
+    geom_point(alpha = 0.4, color = "blue", size = 1) +
+    geom_smooth(method = "lm", se = FALSE, color = "black", linewidth = 0.8) +
+    theme_minimal(base_size = 14) +
+    labs(
+      title = paste0(gene, " (log1p), r = ", round(r_val, 2)),
+      x = "Visium Expression (log1p)",
+      y = "Xenium Expression (log1p)"
+    )
+})
+
+# -------------------------------
+# Step 5: Display plots side-by-side
+# -------------------------------
+library(cowplot)
+plot_grid(plotlist = plot_list, ncol = length(plot_list))
+```
+
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Script/Comparison/GSM8509590_GSE250346/Alignment/Output/Alignment_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+### **The top 7,500 spots achieved a Pearson correlation of 0.9 and were therefore used for downstream analysis (e.g., Spatial scTriangulate).**
+
+##### Build Combined Data Frame for Aligned Xenium–Visium Singlets
+
+``` r
+# -------------------------------
+# Step 0: Select top N most similar spot pairs
+# -------------------------------
+top_n <- 7500
+top_idx <- order(abs_diff)[1:top_n]  # abs_diff should be precomputed (e.g., 1 - correlation or Euclidean)
+xenium_ids <- alignment_df$Xenium_ID
+visium_ids <- alignment_df$Visium_ID
+
+
+xenium_ids_top <- xenium_ids[top_idx]
+visium_ids_top <- visium_ids[top_idx]
+
+# -------------------------------
+# Step 1: Map manuscript short IDs to full rownames
+# -------------------------------
+manuscript_map <- Manuscript@meta.data
+cell_id_map <- setNames(rownames(manuscript_map), manuscript_map$cell_id)
+
+# Only keep Xenium IDs present in the Manuscript metadata
+matched_ids <- intersect(xenium_ids_top, names(cell_id_map))
+mapped_row_ids <- cell_id_map[matched_ids]  # Full Xenium rownames
+
+# -------------------------------
+# Step 2: Assemble combined metadata table
+# -------------------------------
+combined_df <- data.frame(
+  Xenium_ID = matched_ids,
+  Visium_ID = visium_ids_top[match(matched_ids, xenium_ids_top)],
+
+  # Manuscript metadata
+  CNiche = manuscript_map[mapped_row_ids, "CNiche"],
+  TNiche = manuscript_map[mapped_row_ids, "TNiche"],
+  Final_lineage = manuscript_map[mapped_row_ids, "final_lineage"],
+  Final_CT = manuscript_map[mapped_row_ids, "final_CT"],
+  Disease_status = manuscript_map[mapped_row_ids, "disease_status"],
+  Sample_type = manuscript_map[mapped_row_ids, "sample_type"],
+  Sample_affect = manuscript_map[mapped_row_ids, "sample_affect"],
+
+  # RCTD annotations
+  Visium_RCTD_LungMap_ref = Visium2@results$results_df[visium_ids_top[match(matched_ids, xenium_ids_top)], "first_type"],
+  Visium_RCTD_GSE250346_based = Visium2_author_based@results$results_df[visium_ids_top[match(matched_ids, xenium_ids_top)], "first_type"],
+  Xenium_RCTD_LungMap_ref = Xenium2@results$results_df[xenium_ids_top[match(matched_ids, xenium_ids_top)], "first_type"]
+)
+
+# -------------------------------
+# Step 3: Add spatial coordinates (raw)
+# -------------------------------
+combined_df$X_xenium_raw <- Xenium2@spatialRNA@coords[combined_df$Xenium_ID, "x"]
+combined_df$Y_xenium_raw <- Xenium2@spatialRNA@coords[combined_df$Xenium_ID, "y"]
+combined_df$X_visium_raw <- Visium2@spatialRNA@coords[combined_df$Visium_ID, "x"]
+combined_df$Y_visium_raw <- Visium2@spatialRNA@coords[combined_df$Visium_ID, "y"]
+
+# -------------------------------
+# Step 4: Add normalized coordinates (from aligned output)
+# -------------------------------
+combined_df$X_xenium_norm <- xenium_df[combined_df$Xenium_ID, "X"]
+combined_df$Y_xenium_norm <- xenium_df[combined_df$Xenium_ID, "Y"]
+combined_df$X_visium_norm <- visium_df[combined_df$Visium_ID, "X"]
+combined_df$Y_visium_norm <- visium_df[combined_df$Visium_ID, "Y"]
+
+# -------------------------------
+# Step 5: Final formatting
+# -------------------------------
+rownames(combined_df) <- NULL
+print(dim(combined_df))
+```
+
+    ## [1] 7068   20
+
+``` r
+head(combined_df)
+```
+
+    ##    Xenium_ID             Visium_ID CNiche TNiche Final_lineage       Final_CT Disease_status Sample_type Sample_affect
+    ## 1 bafcoheg-1 s_008um_00335_00712-1     C3     T2        Immune   CD4+ T-cells        Disease          MF Less Affected
+    ## 2 bafegbob-1 s_008um_00326_00688-1     C6     T5        Immune Monocytes/MDMs        Disease          MF Less Affected
+    ## 3 bafgdmea-1 s_008um_00285_00662-1     C8    T11    Epithelial            AT2        Disease          MF Less Affected
+    ## 4 bafgiagm-1 s_008um_00285_00667-1     C8     T3    Epithelial            AT1        Disease          MF Less Affected
+    ## 5 bafhcjje-1 s_008um_00283_00663-1     C8    T11    Epithelial            AT2        Disease          MF Less Affected
+    ## 6 bafhcnbd-1 s_008um_00260_00663-1     C8     T4        Immune    Neutrophils        Disease          MF Less Affected
+    ##   Visium_RCTD_LungMap_ref Visium_RCTD_GSE250346_based Xenium_RCTD_LungMap_ref X_xenium_raw Y_xenium_raw X_visium_raw Y_visium_raw
+    ## 1                     AF1                        cDCs                       T    0.1240468   0.05166149    0.1166897   0.03610250
+    ## 2                      DC                        cDCs                    iMON    0.1365320   0.11917562    0.1391047   0.09803697
+    ## 3                     AT2                         AT2                     AT2    0.2292959   0.17892381    0.2457958   0.16680164
+    ## 4                      AM        Alveolar Macrophages                     AT1    0.2295573   0.17540730    0.2460705   0.15399862
+    ## 5                     AT2                         AT2                     AT2    0.2355007   0.17770214    0.2511249   0.16434783
+    ## 6                       T                   Arteriole              Neutrophil    0.2880806   0.17466762    0.3117774   0.16557592
+    ##   X_xenium_norm Y_xenium_norm X_visium_norm Y_visium_norm
+    ## 1     0.1211348    0.03269472     0.1166897    0.03610250
+    ## 2     0.1357425    0.10155913     0.1391047    0.09803697
+    ## 3     0.2442762    0.16250228     0.2457958    0.16680164
+    ## 4     0.2445820    0.15891545     0.2460705    0.15399862
+    ## 5     0.2515358    0.16125619     0.2511249    0.16434783
+    ## 6     0.3130543    0.15816097     0.3117774    0.16557592
+
+``` r
+# Save metadata (for spatial scTriangulate adata.obs)
+# write.csv(combined_df, "/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Output/Comparison/GSM8509590_GSE250346/Alignment/combined_metadata.csv", row.names = FALSE)
+```
+
+##### Filter & Rename Gene Expression Matrices
+
+``` r
+# -------------------------------
+# Step 0: Extract matched spot IDs from combined_df
+# -------------------------------
+top_xenium_ids <- combined_df$Xenium_ID
+top_visium_ids <- combined_df$Visium_ID
+
+# -------------------------------
+# Step 1: Subset expression matrices and add platform-specific suffixes to genes
+# -------------------------------
+
+# Subset Visium expression and rename genes
+expr_visium_subset <- expr_visium[, top_visium_ids, drop = FALSE]
+rownames(expr_visium_subset) <- paste0(rownames(expr_visium_subset), "_visium")
+
+# Subset Xenium expression and rename genes
+expr_xenium_subset <- expr_xenium[, top_xenium_ids, drop = FALSE]
+rownames(expr_xenium_subset) <- paste0(rownames(expr_xenium_subset), "_xenium")
+
+# -------------------------------
+# Step 2: Transpose to spot × gene format
+# -------------------------------
+expr_visium_t <- t(expr_visium_subset)  # dim: n_spots × n_genes_visium
+expr_xenium_t <- t(expr_xenium_subset)  # dim: n_spots × n_genes_xenium
+
+# -------------------------------
+# Step 3: Combine matrices by genes (column-wise)
+# -------------------------------
+combined_expr <- cbind(expr_xenium_t, expr_visium_t)  # dim: n_spots × (genes_xenium + genes_visium)
+
+# -------------------------------
+# Step 4: Set rownames to Xenium spot IDs (for unique identity)
+# -------------------------------
+rownames(combined_expr) <- top_xenium_ids  # Ensures rows are labeled by Xenium IDs
+
+# -------------------------------
+# Step 5: Sanity check
+# -------------------------------
+cat("Combined expression matrix dimensions:\n")
+```
+
+    ## Combined expression matrix dimensions:
+
+``` r
+print(dim(combined_expr))  # Expect: 7500 × total_genes
+```
+
+    ## [1] 7068 4827
+
+##### Sanity Check (Optional)
+
+``` r
+n_genes_xenium <- sum(grepl("_xenium$", colnames(combined_expr)))
+n_genes_visium <- sum(grepl("_visium$", colnames(combined_expr)))
+
+cat("Xenium genes:", n_genes_xenium, "\n")
+```
+
+    ## Xenium genes: 256
+
+``` r
+cat("Visium genes:", n_genes_visium, "\n")
+```
+
+    ## Visium genes: 4571
+
+``` r
+cat("Total genes:", n_genes_xenium + n_genes_visium, "\n")
+```
+
+    ## Total genes: 4827
+
+##### Why the number of rows is NOT 7,500?
+
+``` r
+cell_id_map <- setNames(rownames(manuscript_map), manuscript_map$cell_id)
+missing_ids <- setdiff(xenium_ids_top, names(cell_id_map))
+if (length(missing_ids) > 0) {
+  warning(length(missing_ids), " Xenium IDs were excluded because they lacked Manuscript metadata.")
+}
+```
+
+    ## Warning: 432 Xenium IDs were excluded because they lacked Manuscript metadata.
+
+``` r
+# Save combined Expression Matrix
+# write.csv(combined_expr, "/data/salomonis2/LabFiles/Shunya_Asanuma/Spatial/LungChat/Output/Comparison/GSM8509590_GSE250346/Alignment/combined_matrix.csv", row.names = FALSE)
+```
+
+#### The next step is spatial scTriangulate.
