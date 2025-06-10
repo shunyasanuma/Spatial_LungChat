@@ -26,6 +26,76 @@ plot_RCTD_spatial(
 <img src="./figures/plot_RCTD_spatial()_examples.png" alt="Example" width="1000"/>
 
 ---
+##### `plot_RCTD_gene_spatial()`
+- Plot spatial expression of a single gene from an RCTD object.
+#### Example usages
+
+Highlight only AT1 and AT2 in the spatial plot (Visium HD)
+```
+plot_RCTD_gene_spatial(Visium2, 
+                       gene = "COL1A1", 
+                       spot_class = c("reject", "singlet", "doublet_certain", "doublet_uncertain"),
+                       title = "Visium COL1A1 Expression"
+                       )
+
+plot_RCTD_gene_spatial(Xenium2, 
+                       gene = "COL1A1", 
+                       spot_class = c("reject", "singlet", "doublet_certain", "doublet_uncertain"),
+                       title = "Xenium COL1A1 Expression"
+                       )
+```
+<img src="./figures/plot_RCTD_gene_spatial()_examples.png" alt="Example" width="1000"/>
+
+---
+##### `plot_RCTD_umap()`
+- Visualize UMAP embedding from an RCTD object, colored by metadata or gene expression.
+#### Example usages
+
+```
+plot_RCTD_umap(
+  obj = Visium2,
+  annotation = "first_type",
+  spot_class = c("singlet", "doublet_certain"),
+  highlight = c("AT1", "AT2"),
+  title = "UMAP: AT1 and AT2",
+  add_labels = FALSE
+)
+
+plot_RCTD_umap(
+    obj = Visium2,
+    annotation = "seurat_clusters",
+    spot_class = c("singlet", "doublet_certain"),
+    title = "UMAP - Leiden clusters",
+    add_labels = TRUE
+)
+```
+<img src="./figures/plot_RCTD_umap()_examples.png" alt="Example" width="1000"/>
+
+---
+##### `plot_scTriangulate_gene_spatial()`
+- Plot spatial expression of a single gene from a scTriangulate-derived .h5ad object.
+#### Example usages
+
+```
+plot_scTriangulate_spatial(
+    obj = scTriangulate2,
+    annotation = "pruned",
+    title = "Spatial scTriangulate",
+    x_col = "X_xenium_norm",
+    y_col = "Y_xenium_norm"
+) 
+
+plot_scTriangulate_spatial(
+        obj = scTriangulate2,
+        annotation = "pruned",
+        highlight = c("Final_CT@Activated_Fibrotic_FBs", "Xenium_RCTD_LungMap_ref@AF2"),
+        x_col = "X_xenium_norm",
+        y_col = "Y_xenium_norm"
+    )
+```
+<img src="./figures/plot_scTriangulate_spatial()_examples.png" alt="Example" width="1000"/>
+
+---
 ##### `rank_marker_specificity()`
 - Rank how specific a given gene is to different annotations using one-sided t-tests.
 
@@ -121,4 +191,4 @@ Visium-only, limited annotations
 
 ---
 #### 2. Ingestion
-aaaa
+TO BE UPDATED 
