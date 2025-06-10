@@ -17,6 +17,7 @@ This Jupyter Notebook, [`Crop_high_resolution_microsope_image.ipynb`](./Visium_H
 
 #### Required input files
 - High resolution H&E tiff
+![Overview](./figures/Subset_overview.png)
 
 ---
 #### 2. Robust Cell Type Decomposition, Cell type annotation (R)
