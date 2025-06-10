@@ -17,6 +17,9 @@ This Jupyter Notebook, [`Crop_high_resolution_DAPI_image.ipynb`](./Xenium_Crop_h
 #### Required input files
 - High resolution DAPI tiff. 
 - DAPI image from Xenium is typically located under: `morphology_focus/morphology_focus_000*.ome.tif`
+
+<img src="./figures/Xenium_subset_overview.png" alt="Overview" width="500"/>
+
 ---
 
 #### 2. Robust Cell Type Decomposition, Cell type annotation (R)
