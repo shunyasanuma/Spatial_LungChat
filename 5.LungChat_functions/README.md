@@ -25,6 +25,17 @@ plot_RCTD_spatial(
 ```
 <img src="./figures/plot_RCTD_spatial()_examples.png" alt="Example" width="1000"/>
 
+| Parameter           | Type                    | Default        | Description                                                                                                                       |
+| ------------------- | ----------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `obj`               | `RCTD` object           | *(required)*   | The RCTD object loaded from `.RData` containing `spatialRNA` and `results_df`.                                                    |
+| `annotation`        | `string`                | `"first_type"` | Column name in `results_df` (e.g., `"first_type"`, `"seurat_clusters"`) or a gene name from `@spatialRNA@counts`.                 |
+| `spot_class`        | `character[]`           | `"singlet"`    | Spot class(es) to include, e.g., `c("singlet", "doublet_certain")`.                                                               |
+| `point_size`        | `numeric`               | `0.5`          | Size of the spatial plot dots.                                                                                                    |
+| `legend_point_size` | `numeric`               | `4`            | Size of the legend dots.                                                                                                          |
+| `title`             | `string` or `NULL`      | `NULL`         | Custom plot title. If `NULL`, the function generates a title from `annotation`.                                                   |
+| `highlight`         | `character[]` or `NULL` | `NULL`         | Optional. If set, only highlights the given annotation values; others are shown in grey. Only applies to categorical annotations. |
+
+
 ---
 ##### `plot_RCTD_gene_spatial()`
 - Plot spatial expression of a single gene from an RCTD object.
