@@ -200,6 +200,93 @@ Visium-only, limited annotations
 10                   PNEC  3.905525 90.67358 1.456637e-01 Visium_RCTD_GSE250346_based 6.930042e-01
 ```
 
+##### `rank_cross_platform_gene_correlation()`
+- Compute gene-wise Pearson correlations between Xenium and Visium matched spots.
+
+#### Example usages
+Top 5 genes with the highest correlation between Visium HD and Xenium.
+```
+> rank_cross_platform_gene_correlation(
++     Xenium_obj = Xenium2,
++     Visium_obj = Visium2,
++     alignment_df = alignment_df2,
++     top_genes = 5
++ )
+   COL1A1    COL3A1    COL1A2   SCGB3A2     MARCO 
+0.8968483 0.6852229 0.6121173 0.5324030 0.4863397 
+```
+---
+##### `plot_cross_platform_gene_correlation()`
+- Plot correlation vs. number of best-matched spots for a selected gene across platforms.
+
+#### Example usages
+Visualize the agreement in gene expression between two spatial transcriptomics platforms (e.g., Xenium and Visium) for a given gene (e.g., COL1A1).
+```
+plot_cross_platform_gene_correlation(
+    Xenium_obj = Xenium2,
+    Visium_obj = Visium2,
+    alignment_df = alignment_df2,
+    gene_name = "COL1A1",
+    hline = 0.9,
+    y_range = c(0.8, 1),
+    title = "COL1A1 Cumulative Correlation"
+)
+```
+<img src="./figures/plot_cross_platform_gene_correlation()_examples.png" alt="Example" width="1000"/>
+
+---
+##### `find_top_markers_for_celltype()`
+- Identify top genes specifically enriched in a target cell type on a selected platform.
+  
+#### Example usages
+Top 10 marker genes for B cells
+```
+> find_top_markers_for_celltype(
++     sce = scTriangulate2,
++     celltype = "B",
++     annotation_col = "Visium_RCTD_LungMap_ref",
++     platform_suffix = "visium",
++     top_n = 10
++ )
+                gene    logFC       P_Value         P_Adj
+IGKC_visium     IGKC 1.411783 6.575049e-125 6.042470e-122
+IGHA1_visium   IGHA1 1.443091 1.892872e-108 8.697748e-106
+CD79A_visium   CD79A 1.153946  3.183363e-65  9.751703e-63
+CHGB_visium     CHGB 1.214852  4.359910e-51  5.948981e-49
+ROBO4_visium   ROBO4 1.114986  4.531324e-51  5.948981e-49
+PSMB9_visium   PSMB9 1.113148  2.745531e-51  5.948981e-49
+IFNAR2_visium IFNAR2 1.107883  4.366593e-51  5.948981e-49
+WIPF1_visium   WIPF1 1.107277  8.562866e-51  9.642481e-49
+LMBRD1_visium LMBRD1 1.105284  1.011138e-50  9.642481e-49
+STAT3_visium   STAT3 1.097915  1.049236e-50  9.642481e-49
+```
+---
+##### `plot_ARI_dotplot()`
+- Generates a dot plot to visualize the Adjusted Rand Index (ARI) between clustering results and reference annotations, highlighting the concordance of cell-type or cluster labels across methods or conditions.
+  
+#### Example usages
+RCTD on Visium HD and Xenium using LungMap reference
+```
+plot_ARI_dotplot(
+  sce = scTriangulate2,
+  annotation1 = "Xenium_RCTD_LungMap_ref",
+  annotation2 = "Visium_RCTD_LungMap_ref",
+  title = "RCTD Matching Dot Plot"
+)
+```
+<img src="./figures/plot_ARI_dotplot()_examples1.png" alt="Example" width="1000"/>
+
+TNiche vs CNiche (Annotations from Vannan et al.)
+```
+plot_ARI_dotplot(
+    sce = scTriangulate2,
+    annotation1 = "TNiche",
+    annotation2 = "CNiche",
+    title = "TNiche-CNiche Matching Dot Plot"
+)
+```
+<img src="./figures/plot_ARI_dotplot()_examples2.png" alt="Example" width="1000"/>
+
 ---
 #### 2. Ingestion
 TO BE UPDATED 
