@@ -232,7 +232,7 @@ plot_cross_platform_gene_correlation(
     title = "COL1A1 Cumulative Correlation"
 )
 ```
-<img src="./figures/plot_cross_platform_gene_correlation()_examples.png" alt="Example" width="1000"/>
+<img src="./figures/plot_cross_platform_gene_correlation()_examples.png" alt="Example" width="700"/>
 
 ---
 ##### `find_top_markers_for_celltype()`
@@ -285,7 +285,7 @@ plot_ARI_dotplot(
     title = "TNiche-CNiche Matching Dot Plot"
 )
 ```
-<img src="./figures/plot_ARI_dotplot()_examples2.png" alt="Example" width="1000"/>
+<img src="./figures/plot_ARI_dotplot()_examples2.png" alt="Example" width="700"/>
 
 ---
 #### 2. Ingestion
