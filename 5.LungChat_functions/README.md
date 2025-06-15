@@ -337,5 +337,100 @@ netVisual_heatmap(Xenium1_author,
 <img src="./figures/netVisual_heatmap()_example2.png" alt="Example" width="700"/>
 
 ---
+##### `netVisual_aggregate()`
+- Visualize the inferred signaling network of signaling pathways
+#### Example usages
+Pathway-Specific Network (e.g., UGRP1)
+```
+netVisual_aggregate(Xenium2_author, 
+                    signaling = "UGRP1", 
+                    layout = "circle", 
+                    remove.isolate = TRUE)
+```
+<img src="./figures/netVisual_aggregate()_example.png" alt="Example" width="700"/>
+
+---
+##### `netAnalysis_signalingRole_network()`
+- Heatmap showing the centrality scores/importance of cell groups as senders, receivers, mediators and influencers in a single intercellular communication network 
+#### Example usages
+SPP1 signaling heatmap
+```
+netAnalysis_signalingRole_network(
+    object = Xenium2_author,
+    signaling = "SPP1",
+    color.heatmap = "Reds"
+)
+```
+<img src="./netAnalysis_signalingRole_network()_example.png" alt="Example" width="700"/>
+
+---
+##### `subsetCommunication()`
+- Extract Ligand–Receptor Table for a Pathway
+#### Example usages
+SPP1 signaling source - target
+```
+> subsetCommunication(Xenium2, signaling = "UGRP1", slot.name = "netP")
+                   source target pathway_name         prob pval
+1                      AM     AM        UGRP1 3.344582e-05 0.00
+2                      AM     IM        UGRP1 1.214992e-07 0.00
+3                      AM   iMON        UGRP1 5.487191e-07 0.02
+4                      AM   pMON        UGRP1 5.926166e-07 0.00
+5                    ASMC     AM        UGRP1 5.249921e-06 0.00
+6                    ASMC     IM        UGRP1 1.907093e-08 0.00
+7                    ASMC   iMON        UGRP1 8.612890e-08 0.04
+8                    ASMC   pMON        UGRP1 9.301921e-08 0.00
+9                     AT1     AM        UGRP1 2.777314e-04 0.00
+10                    AT1     IM        UGRP1 1.009165e-06 0.00
+11                    AT1   iMON        UGRP1 4.557614e-06 0.00
+12                    AT1   pMON        UGRP1 4.922221e-06 0.00
+13                    AT2     AM        UGRP1 1.527164e-04 0.00
+14                    AT2     IM        UGRP1 5.548411e-07 0.00
+15                    AT2   iMON        UGRP1 2.505790e-06 0.00
+16                    AT2   pMON        UGRP1 2.706253e-06 0.00
+17       Basal_Suprabasal     AM        UGRP1 2.248421e-03 0.00
+18       Basal_Suprabasal     IM        UGRP1 8.185941e-06 0.00
+19       Basal_Suprabasal   iMON        UGRP1 3.696860e-05 0.00
+20       Basal_Suprabasal   pMON        UGRP1 3.992597e-05 0.00
+21  Ciliated_Deuterosomal     AM        UGRP1 3.892635e-03 0.00
+22  Ciliated_Deuterosomal     IM        UGRP1 1.419542e-05 0.00
+23  Ciliated_Deuterosomal   iMON        UGRP1 6.410672e-05 0.00
+24  Ciliated_Deuterosomal   pMON        UGRP1 6.923491e-05 0.00
+25                     DC     AM        UGRP1 8.516510e-06 0.00
+26                     DC     IM        UGRP1 3.093729e-08 0.00
+27                     DC   iMON        UGRP1 1.397202e-07 0.04
+28                     DC   pMON        UGRP1 1.508978e-07 0.00
+29                 Goblet     AM        UGRP1 3.677811e-04 0.00
+30                 Goblet     IM        UGRP1 1.336489e-06 0.00
+31                 Goblet   iMON        UGRP1 6.035877e-06 0.00
+32                 Goblet   pMON        UGRP1 6.518744e-06 0.00
+33               Ionocyte     AM        UGRP1 1.081990e-04 0.00
+34               Ionocyte     IM        UGRP1 3.930855e-07 0.00
+35               Ionocyte   iMON        UGRP1 1.775266e-06 0.02
+36               Ionocyte   pMON        UGRP1 1.917287e-06 0.00
+37                    MEC     AM        UGRP1 6.131564e-05 0.00
+38                    MEC     IM        UGRP1 2.227485e-07 0.00
+39                    MEC   iMON        UGRP1 1.005985e-06 0.02
+40                    MEC   pMON        UGRP1 1.086463e-06 0.00
+41 Megakaryocyte_Platelet     AM        UGRP1 3.832315e-05 0.00
+42 Megakaryocyte_Platelet     IM        UGRP1 1.392178e-07 0.00
+43 Megakaryocyte_Platelet   iMON        UGRP1 6.287406e-07 0.01
+44 Megakaryocyte_Platelet   pMON        UGRP1 6.790398e-07 0.00
+45            Mesothelial     AM        UGRP1 7.048157e-06 0.00
+46            Mesothelial     IM        UGRP1 2.560328e-08 0.00
+47            Mesothelial   iMON        UGRP1 1.156305e-07 0.04
+48            Mesothelial   pMON        UGRP1 1.248810e-07 0.00
+49         SMG_Basal_Duct     AM        UGRP1 2.829325e-04 0.00
+50         SMG_Basal_Duct     IM        UGRP1 1.028069e-06 0.00
+51         SMG_Basal_Duct   pMON        UGRP1 5.014426e-06 0.00
+52          Secretory_RAS     AM        UGRP1 5.862856e-03 0.00
+53          Secretory_RAS     IM        UGRP1 2.142252e-05 0.00
+54          Secretory_RAS   iMON        UGRP1 9.674195e-05 0.00
+55          Secretory_RAS   pMON        UGRP1 1.044805e-04 0.00
+56                   Tuft     AM        UGRP1 1.290768e-04 0.00
+57                   Tuft     IM        UGRP1 4.689440e-07 0.00
+58                   Tuft   pMON        UGRP1 2.287288e-06 0.00
+```
+
+---
 #### 2. Ingestion
 TO BE UPDATED 
