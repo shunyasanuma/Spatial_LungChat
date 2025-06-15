@@ -361,7 +361,7 @@ netAnalysis_signalingRole_network(
     color.heatmap = "Reds"
 )
 ```
-<img src="./netAnalysis_signalingRole_network()_example.png" alt="Example" width="700"/>
+<img src="./figures/netAnalysis_signalingRole_network()_example.png" alt="Example" width="700"/>
 
 ---
 ##### `subsetCommunication()`
