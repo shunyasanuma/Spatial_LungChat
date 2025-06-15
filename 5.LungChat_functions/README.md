@@ -290,7 +290,11 @@ plot_ARI_dotplot(
 
 ---
 #### Existing `CellChat` (Suoqin Jin et al.) functions that can use in Spatial LungChat
-
+Required to load
+```
+library(CellChat)
+```
+---
 ##### `netVisual_circle() `
 - The width of edges represent the strength of the communication. 
 #### Example usages
