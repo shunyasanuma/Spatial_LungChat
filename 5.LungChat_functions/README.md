@@ -200,6 +200,7 @@ Visium-only, limited annotations
 10                   PNEC  3.905525 90.67358 1.456637e-01 Visium_RCTD_GSE250346_based 6.930042e-01
 ```
 
+---
 ##### `rank_cross_platform_gene_correlation()`
 - Compute gene-wise Pearson correlations between Xenium and Visium matched spots.
 
@@ -286,6 +287,50 @@ plot_ARI_dotplot(
 )
 ```
 <img src="./figures/plot_ARI_dotplot()_examples2.png" alt="Example" width="700"/>
+
+---
+#### Existing `CellChat` (Suoqin Jin et al.) functions that can use in Spatial LungChat
+
+##### `netVisual_circle() `
+- The width of edges represent the strength of the communication. 
+#### Example usages
+```
+netVisual_circle(Xenium1@net$count, 
+                 vertex.weight = group_sizes$Xenium1, 
+                 title.name = "Xenium1 - Unaffected", 
+                 vertex.label.cex = 0.8, 
+                 margin = 0.4, 
+                 remove.isolate = TRUE)
+```
+<img src="./figures/netVisual_circle()_examples.png" alt="Example" width="700"/>
+
+---
+##### `obj`@netP$pathways
+- Showing signaling pathways that were identified as active between cell types based on the input expression data and ligand-receptor interactions.
+#### Example usages
+Active Signaling Pathways in the Control Sample
+```
+> Xenium1_author@netP$pathways
+[1] "SPP1"  "VEGF"  "UGRP1" "CCL"   "EGF"
+```
+Active Signaling Pathways in the a IPF Sample
+``` 
+> Xenium2_author@netP$pathways
+[1] "UGRP1"  "SPP1"   "VEGF"   "CCL"    "FASLG"  "CXCL"   "APELIN"
+```
+
+---
+##### `netVisual_heatmap()`
+- Showing a heatmap to visualize the strength of cell-cell communication based on a specified measure.
+#### Example usages
+```
+netVisual_heatmap(Xenium1_author, 
+                  measure = "weight", 
+                  color.heatmap = "Reds", 
+                  title.name = "Xenium Control")
+```
+<img src="./figures/netVisual_heatmap()_example1.png" alt="Example" width="700"/>
+<img src="./figures/netVisual_heatmap()_example2.png" alt="Example" width="700"/>
 
 ---
 #### 2. Ingestion
