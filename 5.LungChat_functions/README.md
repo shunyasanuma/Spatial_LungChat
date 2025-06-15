@@ -302,7 +302,7 @@ netVisual_circle(Xenium1@net$count,
                  margin = 0.4, 
                  remove.isolate = TRUE)
 ```
-<img src="./figures/netVisual_circle()_examples.png" alt="Example" width="700"/>
+<img src="./figures/netVisual_circle()_example.png" alt="Example" width="700"/>
 
 ---
 ##### `obj`@netP$pathways
