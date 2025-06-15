@@ -83,6 +83,40 @@ plot_RCTD_umap(
 <img src="./figures/plot_RCTD_umap()_examples.png" alt="Example" width="1000"/>
 
 ---
+##### `scTriangulate_summarize_celltype_stability()`
+- Summarizes the stability of each cell type across multiple clustering or annotation sources by calculating metrics, helping assess consistency and robustness of cell type assignments.
+
+#### Example usages
+```
+labels_list <- list(
+    Final_CT = c("CD4+_T-cells", "CD8+_T-cells", "Tregs", "Proliferating_T-cells"),
+    Visium_RCTD_LungMap_ref = c("T"),
+    Visium_RCTD_GSE250346_based = c("CD4+_T-cells", "CD8+_T-cells", "Tregs", "Proliferating_T-cells"),
+    Xenium_RCTD_LungMap_ref = c("T")
+)
+
+scTriangulate_summarize_celltype_stability(
+    sce = scTriangulate2,
+    celltype_labels = labels_list
+)
+```
+#### Output (portion)
+```
+Cluster          Platform confidence SCCAF.sctri_rna_leid…¹ SCCAF.sctri_rna_leid…² SCCAF.sctri_rna_leid…³
+   <chr>            <chr>         <dbl>                  <dbl>                  <dbl>                  <dbl>
+ 1 Final_CT@CD4+_T… Xenium        0.461                  0.999                      1                  0.999
+ 2 Final_CT@CD8+_T… Xenium        0.755                  0.999                      1                  0.999
+ 3 Final_CT@Prolif… Xenium        1                      1                          1                  1    
+ 4 Final_CT@Tregs   Xenium        0.619                  0.999                      1                  0.999
+ 5 Visium_RCTD_GSE… Xenium        0.487                  1                          1                  1    
+ 6 Visium_RCTD_GSE… Xenium        0.380                  1                          1                  1    
+ 7 Visium_RCTD_GSE… Xenium        0.459                  1                          1                  1    
+ 8 Visium_RCTD_GSE… Xenium        0.432                  1                          1                  1    
+ 9 Visium_RCTD_Lun… Xenium        0.484                  1                          1                  1    
+10 Xenium_RCTD_Lun… Xenium        0.597                  0.999                      1                  0.999
+```
+
+---
 ##### `plot_scTriangulate_gene_spatial()`
 - Plot spatial expression of a single gene from a scTriangulate-derived .h5ad object.
 #### Example usages
