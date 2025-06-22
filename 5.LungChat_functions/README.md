@@ -71,15 +71,61 @@ plot_umap(scTriangulate2,
           highlight = c("AT1", "AT2"))
 ```
 
-<img src="./figures/plot_umap_2.png" alt="Example" width="1000"/>
+<img src="./figures/plot_umap_2.png" alt="Example" width="800"/>
 
+---
+#### `plot_gene_spatial()`
+- Plot spatial gene expression for Visium or Xenium using platform-specific coordinates.
+#### Example usages
+```
+plot_gene_spatial(scTriangulate2, 
+                  gene = "COL1A1", 
+                  platform = "Visium", 
+                  point_size = 0.4,
+                  title = "Visium - Expression of COL1A1")
+                  
+plot_gene_spatial(scTriangulate2, 
+                  gene = "COL1A1", 
+                  platform = "Xenium", 
+                  point_size = 0.4,
+                  title = "Xenium - Expression of COL1A1")
+```
+<img src="./figures/plot_gene_spatial_1.png" alt="Example" width="800"/>
 
+---
+#### `rank_cross_platform_gene_correlation()`
+- Rank genes by Pearson correlation across Xenium-Visium matched expression.
+#### Example usages
+Top 5 highly correlated genes (Visium HD - Xenium)
+```
+rank_cross_platform_gene_correlation(
+    obj = scTriangulate2,
+    top_genes = 5
+)
+```
+Output
+```
+   COL1A1    COL3A1    COL1A2   SCGB3A2     MARCO 
+0.8968483 0.6852229 0.6121173 0.5324030 0.4863397 
+```
 
+---
+#### `plot_cross_platform_gene_correlation()`
+- Plot cumulative Pearson correlation across best-matched Visium-Xenium spots for a gene.
+#### Example usages
+Cumulative Pearson correlation (COL1A1)
+```
+plot_cross_platform_gene_correlation(
+    obj = scTriangulate2,
+    gene_name = "COL1A1",
+    ID1_col = "Visium_ID",
+    ID2_col = "Xenium_ID",
+    y_range = c(0.8,1)
+)
+```
+<img src="./figures/plot_cross_platform_gene_correlation_1.png" alt="Example" width="800"/>
 
-
-
-
-
+---
 
 ##################################################
 ##### `plot_RCTD_spatial()`
