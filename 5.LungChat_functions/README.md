@@ -52,6 +52,8 @@ plot_umap(scTriangulate2,
           platform = "Visium", 
           annotation = "Visium_RCTD_LungMap_ref")
 ```
+<img src="./figures/plot_umap_1.png" alt="Example" width="1000"/>
+
 Xenium (AT1 & AT2)
 ```
 plot_umap(scTriangulate2, 
@@ -69,7 +71,7 @@ plot_umap(scTriangulate2,
           highlight = c("AT1", "AT2"))
 ```
 
-<img src="./figures/plot_umap_1.png" alt="Example" width="900"/>
+<img src="./figures/plot_umap_2.png" alt="Example" width="1000"/>
 
 
 
