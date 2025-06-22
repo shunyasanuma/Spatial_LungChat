@@ -8,6 +8,78 @@
 ---
 #### 1. Visualization & Analysis
 
+#### `plot_spatial()`
+- Visualize spatial annotation (categorical or numeric) from a SummarizedExperiment object.
+#### Example usages
+Generates a spatial scatterplot of scTriangulate2 cells or spots, colored by the "pruned" annotation to visualize cell type or cluster identity across tissue space.
+```
+plot_spatial(scTriangulate2, annotation = "pruned")
+```
+<img src="./figures/plot_spatial_1.png" alt="Example" width="800"/>
+
+Generate a spatial plot highlighting `TNiche@T6` and `TNiche@T7` clusters
+```
+plot_spatial(scTriangulate2, 
+             annotation = "pruned", 
+             highlight = c("TNiche@T6", "TNiche@T7"))
+```
+<img src="./figures/plot_spatial_2.png" alt="Example" width="400"/>
+
+Generates a spatial map of the IPF microenvironment where each spot is colored by confidence score
+```
+plot_spatial(
+    obj = scTriangulate2,
+    annotation = "confidence",
+    title = "Spatial Confidence Map of the IPF Microenvironment",
+    point_size = 0.4
+)
+```
+<img src="./figures/plot_spatial_3.png" alt="Example" width="500"/>
+
+---
+#### `plot_umap()`
+- Visualize UMAP embedding for Visium HD or Xenium platforms using metadata or highlights.
+#### Example usages
+Xenium UMAP
+```
+plot_umap(scTriangulate2, 
+          platform = "Xenium", 
+          annotation = "Final_CT")
+```
+Visium HD UMAP
+```
+plot_umap(scTriangulate2, 
+          platform = "Visium", 
+          annotation = "Visium_RCTD_LungMap_ref")
+```
+Xenium (AT1 & AT2)
+```
+plot_umap(scTriangulate2, 
+          platform = "Visium", 
+          annotation = "Visium_RCTD_LungMap_ref", 
+          title = "Visium - AT1 & AT2",
+          highlight = c("AT1", "AT2"))
+```
+Visium HD (AT1 & AT2)
+```
+plot_umap(scTriangulate2, 
+          platform = "Xenium", 
+          annotation = "Final_CT", 
+          title = "Xenium - AT1 & AT2",
+          highlight = c("AT1", "AT2"))
+```
+
+<img src="./figures/plot_umap_1.png" alt="Example" width="900"/>
+
+
+
+
+
+
+
+
+
+##################################################
 ##### `plot_RCTD_spatial()`
 - Visualize spatial cell type or metadata annotation from an RCTD object.
 #### Example usages
