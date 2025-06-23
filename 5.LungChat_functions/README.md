@@ -246,7 +246,7 @@ plot_ARI_dotplot(
   title = "RCTD Matching Dot Plot"
 )
 ```
-<img src="./figures/plot_marker_expression_dotplot_1.png" alt="Example" width="900"/>
+<img src="./figures/plot_ARI_dotplot_1.png" alt="Example" width="900"/>
 
 ---
 #### `plot_marker_expression_dotplot()`
