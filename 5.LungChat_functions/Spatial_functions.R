@@ -352,31 +352,64 @@ plot_cross_platform_gene_correlation <- function(
 # ------------------------------------------------------------
 # 6. scTriangulate_summarize_celltype_stability: cell type metrics
 # ------------------------------------------------------------
-scTriangulate_summarize_celltype_stability <- function(sce, celltype_labels) {
+scTriangulate_summarize_celltype_stability <- function(sce, celltype_labels, show_all_metrics = FALSE) {
+  
   stopifnot(inherits(sce, "SingleCellExperiment"))
   stopifnot(is.list(celltype_labels))
 
   df_list <- lapply(names(celltype_labels), function(annot_col) {
     if (!(annot_col %in% colnames(colData(sce)))) return(NULL)
-
     labels <- as.character(colData(sce)[[annot_col]])
-    selected <- labels %in% celltype_labels[[annot_col]]
-
-    if (sum(selected, na.rm = TRUE) == 0) return(NULL)
-
-    meta <- as.data.frame(colData(sce)[selected, , drop = FALSE])
-    meta$Cluster <- paste0(annot_col, "@", labels[selected])
+    selected_cells <- labels %in% celltype_labels[[annot_col]]
+    if (sum(selected_cells, na.rm = TRUE) == 0) return(NULL)
+    meta <- as.data.frame(colData(sce)[selected_cells, , drop = FALSE])
+    meta$Cluster <- paste0(annot_col, "@", labels[selected_cells])
     meta$Platform <- ifelse(grepl("visium", rownames(meta), ignore.case = TRUE), "Visium", "Xenium")
-
     return(meta)
   })
 
   df_combined <- bind_rows(df_list)
 
-  df_combined %>%
-    select(Cluster, Platform, confidence, starts_with("SCCAF"), starts_with("tfidf"), starts_with("doublet")) %>%
-    group_by(Cluster, Platform) %>%
+  if (nrow(df_combined) == 0) return(tibble())
+
+  summary_df <- df_combined %>%
+    group_by(Cluster, Platform)
+
+  if (show_all_metrics) {
+    summary_df <- summary_df %>%
+      select(Cluster, Platform, confidence, starts_with("SCCAF"), starts_with("tfidf"), starts_with("doublet"), starts_with("reassign."), ends_with("_shapley"))
+  } else {
+    summary_df <- summary_df %>%
+      select(Cluster, Platform, confidence, ends_with("_shapley"))
+  }
+
+  summary_df <- summary_df %>%
     summarize(across(where(is.numeric), mean, na.rm = TRUE), .groups = "drop")
+    
+  # --- CORRECTED: Use order() for robust sorting ---
+  if (nrow(summary_df) > 0) {
+    # Isolate the shapley columns
+    shapley_cols <- names(summary_df)[grepl("_shapley$", names(summary_df))]
+    # Isolate the other, non-shapley columns
+    other_cols <- setdiff(names(summary_df), shapley_cols)
+    
+    # Get the shapley values from the first row as a numeric vector
+    shapley_values_vector <- as.numeric(summary_df[1, shapley_cols])
+    
+    # Get the sorting order (indices) of the columns
+    col_order <- order(shapley_values_vector, decreasing = TRUE)
+    
+    # Use the ordering indices to sort the original column names
+    sorted_shapley_names <- shapley_cols[col_order]
+    
+    # Create the final, sorted column order
+    final_col_order <- c(other_cols, sorted_shapley_names)
+    
+    # Reorder the dataframe
+    summary_df <- summary_df[, final_col_order]
+  }
+  
+  return(summary_df)
 }
 
 # ------------------------------------------------------------
