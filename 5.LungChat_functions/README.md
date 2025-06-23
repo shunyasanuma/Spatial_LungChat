@@ -319,6 +319,7 @@ visualize_matched_pairs_scatter(
 
 ---
 #### 2. CellChat
+Cell-Cell communication analysis pakage developed by Jin et al.
 
 #### `netVisual_circle()`
 - Circle plot of cell-cell communication network
