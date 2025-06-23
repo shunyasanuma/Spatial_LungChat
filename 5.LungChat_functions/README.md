@@ -2,7 +2,9 @@
 
 ### Outline
 [5.1. Visualization/Analysis](#1-Visualization-&-Analysis)
+
 [5.2. CellChat](#2-CellChat)
+
 [5.3. Ingestion](#3-Ingestion)
 
 ---
