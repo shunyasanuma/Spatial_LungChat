@@ -377,5 +377,9 @@ netVisual_heatmap(CellChat_combined$Xenium_Control_Author,
 <img src="./figures/netVisual_heatmap_2.png" alt="Example" width="1000"/>
 
 ---
+#### `netVisual_aggregate()`
+- Visualize the inferred signaling network of signaling pathways by aggregating all L-R pairs
+#### Example usages
+
 #### 3. Ingestion
 TO BE UPDATED 
