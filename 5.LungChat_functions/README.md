@@ -380,6 +380,112 @@ netVisual_heatmap(CellChat_combined$Xenium_Control_Author,
 #### `netVisual_aggregate()`
 - Visualize the inferred signaling network of signaling pathways by aggregating all L-R pairs
 #### Example usages
+Circle plot that visualizes the intercellular communication network for the UGRP1 signaling pathway in the Xenium IPF Author annotation
+```
+netVisual_aggregate(CellChat_combined$Xenium_IPF_Author, 
+                    signaling = "UGRP1", 
+                    layout = "circle", 
+                    remove.isolate = TRUE)
+```
+<img src="./figures/netVisual_aggregate_1.png" alt="Example" width="500"/>
 
+---
+#### `subsetCommunication()`
+- Subset the inferred cell-cell communications of interest
+#### Example usages
+Returns a data frame summarizing the UGRP1 pathway-level communication network from the 'Xenium_IPF_Author', author annotation CellChat object.
+```
+subsetCommunication(CellChat_combined$Xenium_IPF_Author,
+                    signaling = "UGRP1", 
+                    slot.name = "netP")
+```
+Output
+```
+                  source                      target pathway_name         prob pval
+1                    AT1        Alveolar Macrophages        UGRP1 1.186312e-04    0
+2                    AT1 Macrophages - IFN-activated        UGRP1 3.318226e-06    0
+3                    AT1              Monocytes/MDMs        UGRP1 1.256188e-06    0
+4                    AT1       Proliferating Myeloid        UGRP1 2.093645e-06    0
+5                    AT1           SPP1+ Macrophages        UGRP1 3.452628e-05    0
+6                    AT2        Alveolar Macrophages        UGRP1 1.694225e-04    0
+7                    AT2 Macrophages - IFN-activated        UGRP1 4.739140e-06    0
+8                    AT2              Monocytes/MDMs        UGRP1 1.794108e-06    0
+9                    AT2       Proliferating Myeloid        UGRP1 2.990177e-06    0
+10                   AT2           SPP1+ Macrophages        UGRP1 4.931030e-05    0
+11       Adventitial FBs        Alveolar Macrophages        UGRP1 9.377598e-05    0
+12       Adventitial FBs Macrophages - IFN-activated        UGRP1 2.622939e-06    0
+13       Adventitial FBs              Monocytes/MDMs        UGRP1 9.929713e-07    0
+14       Adventitial FBs       Proliferating Myeloid        UGRP1 1.654951e-06    0
+15       Adventitial FBs           SPP1+ Macrophages        UGRP1 2.729197e-05    0
+16  Alveolar Macrophages        Alveolar Macrophages        UGRP1 7.073142e-05    0
+17  Alveolar Macrophages Macrophages - IFN-activated        UGRP1 1.978332e-06    0
+18  Alveolar Macrophages              Monocytes/MDMs        UGRP1 7.489409e-07    0
+19  Alveolar Macrophages       Proliferating Myeloid        UGRP1 1.248234e-06    0
+20  Alveolar Macrophages           SPP1+ Macrophages        UGRP1 2.058489e-05    0
+21               B cells        Alveolar Macrophages        UGRP1 3.272054e-05    0
+22               B cells Macrophages - IFN-activated        UGRP1 9.151478e-07    0
+23               B cells              Monocytes/MDMs        UGRP1 3.464490e-07    0
+24               B cells       Proliferating Myeloid        UGRP1 5.774149e-07    0
+25               B cells           SPP1+ Macrophages        UGRP1 9.522367e-06    0
+26                 Basal        Alveolar Macrophages        UGRP1 3.468497e-03    0
+27                 Basal Macrophages - IFN-activated        UGRP1 9.733410e-05    0
+28                 Basal              Monocytes/MDMs        UGRP1 3.685014e-05    0
+29                 Basal       Proliferating Myeloid        UGRP1 6.141539e-05    0
+30                 Basal           SPP1+ Macrophages        UGRP1 1.011871e-03    0
+31                Goblet        Alveolar Macrophages        UGRP1 5.747896e-03    0
+32                Goblet              Monocytes/MDMs        UGRP1 6.120552e-05    0
+33                Goblet       Proliferating Myeloid        UGRP1 1.020050e-04    0
+34                Goblet           SPP1+ Macrophages        UGRP1 1.679565e-03    0
+35          KRT5-/KRT17+        Alveolar Macrophages        UGRP1 2.332229e-04    0
+36          KRT5-/KRT17+ Macrophages - IFN-activated        UGRP1 6.524191e-06    0
+37          KRT5-/KRT17+              Monocytes/MDMs        UGRP1 2.469882e-06    0
+38          KRT5-/KRT17+       Proliferating Myeloid        UGRP1 4.116463e-06    0
+39          KRT5-/KRT17+           SPP1+ Macrophages        UGRP1 6.788243e-05    0
+40         Multiciliated        Alveolar Macrophages        UGRP1 5.889110e-03    0
+41         Multiciliated Macrophages - IFN-activated        UGRP1 1.656532e-04    0
+42         Multiciliated              Monocytes/MDMs        UGRP1 6.271803e-05    0
+43         Multiciliated       Proliferating Myeloid        UGRP1 1.045257e-04    0
+44         Multiciliated           SPP1+ Macrophages        UGRP1 1.721001e-03    0
+45        Myofibroblasts        Alveolar Macrophages        UGRP1 8.322206e-04    0
+46        Myofibroblasts Macrophages - IFN-activated        UGRP1 2.329415e-05    0
+47        Myofibroblasts              Monocytes/MDMs        UGRP1 8.818627e-06    0
+48        Myofibroblasts       Proliferating Myeloid        UGRP1 1.469763e-05    0
+49        Myofibroblasts           SPP1+ Macrophages        UGRP1 2.423311e-04    0
+50     Proliferating AT2        Alveolar Macrophages        UGRP1 1.665550e-04    0
+51     Proliferating AT2              Monocytes/MDMs        UGRP1 1.763738e-06    0
+52     Proliferating AT2       Proliferating Myeloid        UGRP1 2.939560e-06    0
+53     Proliferating AT2           SPP1+ Macrophages        UGRP1 4.847562e-05    0
+54 Proliferating Myeloid        Alveolar Macrophages        UGRP1 5.725954e-05    0
+55 Proliferating Myeloid Macrophages - IFN-activated        UGRP1 1.601508e-06    0
+56 Proliferating Myeloid              Monocytes/MDMs        UGRP1 6.062856e-07    0
+57 Proliferating Myeloid       Proliferating Myeloid        UGRP1 1.010476e-06    0
+58 Proliferating Myeloid           SPP1+ Macrophages        UGRP1 1.666402e-05    0
+59                  RASC        Alveolar Macrophages        UGRP1 4.913070e-03    0
+60                  RASC Macrophages - IFN-activated        UGRP1 1.380667e-04    0
+61                  RASC              Monocytes/MDMs        UGRP1 5.227259e-05    0
+62                  RASC       Proliferating Myeloid        UGRP1 8.711795e-05    0
+63                  RASC           SPP1+ Macrophages        UGRP1 1.434772e-03    0
+64     SPP1+ Macrophages        Alveolar Macrophages        UGRP1 1.552866e-05    0
+65     SPP1+ Macrophages Macrophages - IFN-activated        UGRP1 4.343076e-07    0
+66     SPP1+ Macrophages              Monocytes/MDMs        UGRP1 1.644165e-07    0
+67     SPP1+ Macrophages       Proliferating Myeloid        UGRP1 2.740275e-07    0
+68     SPP1+ Macrophages           SPP1+ Macrophages        UGRP1 4.519112e-06    0
+69             Secretory        Alveolar Macrophages        UGRP1 7.297660e-03    0
+70             Secretory              Monocytes/MDMs        UGRP1 7.782795e-05    0
+71             Secretory       Proliferating Myeloid        UGRP1 1.297065e-04    0
+72             Secretory           SPP1+ Macrophages        UGRP1 2.134769e-03    0
+73      Transitional AT2        Alveolar Macrophages        UGRP1 2.097474e-03    0
+74      Transitional AT2 Macrophages - IFN-activated        UGRP1 5.878139e-05    0
+75      Transitional AT2              Monocytes/MDMs        UGRP1 2.225377e-05    0
+76      Transitional AT2       Proliferating Myeloid        UGRP1 3.708906e-05    0
+77      Transitional AT2           SPP1+ Macrophages        UGRP1 6.113039e-04    0
+78                  cDCs        Alveolar Macrophages        UGRP1 1.655765e-05    0
+79                  cDCs Macrophages - IFN-activated        UGRP1 4.630870e-07    0
+80                  cDCs              Monocytes/MDMs        UGRP1 1.753116e-07    0
+81                  cDCs       Proliferating Myeloid        UGRP1 2.921859e-07    0
+82                  cDCs           SPP1+ Macrophages        UGRP1 4.818570e-06    0
+```
+
+---
 #### 3. Ingestion
 TO BE UPDATED 
