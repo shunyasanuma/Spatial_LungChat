@@ -5,5 +5,5 @@
 ### [4. Spatial scTriangulate](4.Spatial_scTriangulate/README.md)
 ### [5. LungChat (LLM) functions](5.LungChat_functions/README.md)
 - Visualization
-- CellChat (Cell-Cell communication pakage developed by Jin et al.)
+- CellChat (Cell-Cell communication analysis pakage developed by Jin et al.)
 - Ingestion
