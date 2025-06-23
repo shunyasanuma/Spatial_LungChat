@@ -319,6 +319,63 @@ visualize_matched_pairs_scatter(
 
 ---
 #### 2. CellChat
+
+#### `netVisual_circle()`
+- Circle plot of cell-cell communication network
+```
+netVisual_circle(CellChat_combined$Xenium_IPF_Author@net$count, 
+                 vertex.weight = groupSizes$Xenium_IPF_Author, 
+                 vertex.label.cex = 0.7, 
+                 margin = 0.2, 
+                 remove.isolate = TRUE)
+```
+<img src="./figures/netVisual_circle_1.png" alt="Example" width="500"/>
+
+---
+#### List all inferred signaling pathways
+Control, Two different annotations
+```
+> # Xenium, Authors annotation, Control
+> CellChat_combined$Xenium_Control_Author@netP$pathways
+[1] "SPP1"  "VEGF"  "UGRP1" "CCL"   "EGF"  
+> # Xenium, LungMap-based RCTD, Control
+> CellChat_combined$Xenium_Control_LungMap@netP$pathways
+[1] "VEGF" "CCL" 
+```
+IPF, Visium HD & Xenium
+```
+> # Visium, LungMap-based RCTD, IPF
+> CellChat_combined$Visium_IPF_LungMap@netP$pathways
+[1] "UGRP1" "CXCL" 
+> # Xenium, Authors annotation, IPF
+> CellChat_combined$Xenium_IPF_Author@netP$pathways
+[1] "UGRP1"  "SPP1"   "VEGF"   "CCL"    "FASLG"  "CXCL"   "APELIN"
+> # Xenium, LungMap-based RCTD, IPF
+> CellChat_combined$Xenium_IPF_LungMap@netP$pathways
+[1] "UGRP1"  "VEGF"   "CCL"    "APELIN" "FASLG"  "SPP1"   "CXCL"  
+```
+---
+#### `netVisual_heatmap()`
+- Generates a heatmap of intercellular communication strength
+#### Example usages
+Xenium, IPF
+```
+netVisual_heatmap(CellChat_combined$Xenium_IPF_Author, 
+                  measure = "weight", 
+                  color.heatmap = "Reds", 
+                  title.name = "Xenium IPF
+```
+<img src="./figures/netVisual_heatmap_1.png" alt="Example" width="1000"/>
+
+Xenium, Control
+```
+netVisual_heatmap(CellChat_combined$Xenium_Control_Author, 
+                  measure = "weight", 
+                  color.heatmap = "Reds", 
+                  title.name = "Xenium Control")
+```
+<img src="./figures/netVisual_heatmap_2.png" alt="Example" width="1000"/>
+
 ---
 #### 3. Ingestion
 TO BE UPDATED 
