@@ -9,6 +9,7 @@
 
 ---
 #### 1. Visualization & Analysis
+Script: [`Spatial_functions.R`](./Spatial_functions.R)
 
 #### `plot_spatial()`
 - Visualize spatial annotation (categorical or numeric) from a SummarizedExperiment object.
