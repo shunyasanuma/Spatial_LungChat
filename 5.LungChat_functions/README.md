@@ -2,8 +2,8 @@
 
 ### Outline
 [5.1. Visualization/Analysis](#1-Visualization-&-Analysis)
-
-[5.2. Ingestion](#2-Ingestion)
+[5.2. CellChat](#2-CellChat)
+[5.3. Ingestion](#3-Ingestion)
 
 ---
 #### 1. Visualization & Analysis
@@ -315,5 +315,7 @@ visualize_matched_pairs_scatter(
 <img src="./figures/visualize_matched_pairs_scatter_1.png" alt="Example" width="700"/>
 
 ---
-#### 2. Ingestion
+#### 2. CellChat
+---
+#### 3. Ingestion
 TO BE UPDATED 
