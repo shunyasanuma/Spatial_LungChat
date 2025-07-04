@@ -172,7 +172,7 @@ Table: Summary of Cell Type Stability Metrics
 |Visium_RCTD_GSE250346_based@CD4+_T-cells |    0.476| 0.290|    0.520|     0.469|   0.783|      0.850|
 |Visium_RCTD_GSE250346_based@CD8+_T-cells |    0.000| 0.304|    0.332|     0.305|   0.067|      0.128|
 ```
-<img src="./figures/generate_stability_report_1.png" alt="Example" width="500"/>
+<img src="./figures/generate_stability_report_1.png" alt="Example" width="800"/>
 
 ---
 #### `scTriangulate_summarize_celltype_stability()`
