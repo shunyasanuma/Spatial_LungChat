@@ -128,6 +128,53 @@ plot_cross_platform_gene_correlation(
 <img src="./figures/plot_cross_platform_gene_correlation_1.png" alt="Example" width="500"/>
 
 ---
+#### `generate_stability_report()`
+- Summarize per-cluster metrics (confidence, reassign, SCCAF, TF-IDF 10, TF-IDF 5m Shapley)
+
+#### Example usages
+Stability of T cells 
+```
+# Define Inputs and Generate Outputs
+# Define the single list of clusters you want to analyze and plot
+clusters_to_process <- list(
+    Final_CT = c("CD4+_T-cells", "CD8+_T-cells"),
+    Visium_RCTD_LungMap_ref = c("T"),
+    Visium_RCTD_GSE250346_based = c("CD4+_T-cells", "CD8+_T-cells")
+)
+
+# Call the function once to get both the table and the plot
+output <- generate_stability_report(
+    sce = scTriangulate2, 
+    celltype_labels = clusters_to_process
+)
+
+
+# Print Both the Table and the Plot
+if (!is.null(output)) {
+    
+    # Print the summary table
+    print(kable(output$summary_table, digits = 3, caption = "Summary of Cell Type Stability Metrics"))
+    
+    # Print the final plot
+    print(output$stability_plot)
+    
+}
+```
+Output
+```
+Table: Summary of Cell Type Stability Metrics
+
+|Cluster                                  | Reassign| SCCAF| TF-IDF 5| TF-IDF 10| Shapley| Confidence|
+|:----------------------------------------|--------:|-----:|--------:|---------:|-------:|----------:|
+|Final_CT@CD4+_T-cells                    |    0.562| 0.767|    0.727|     0.540|   1.783|      0.599|
+|Final_CT@CD8+_T-cells                    |    0.456| 0.722|    0.837|     0.673|   6.917|      0.850|
+|Visium_RCTD_LungMap_ref@T                |    0.706| 0.789|    0.623|     0.521|   8.083|      0.156|
+|Visium_RCTD_GSE250346_based@CD4+_T-cells |    0.476| 0.290|    0.520|     0.469|   0.783|      0.850|
+|Visium_RCTD_GSE250346_based@CD8+_T-cells |    0.000| 0.304|    0.332|     0.305|   0.067|      0.128|
+```
+<img src="./figures/generate_stability_report_1.png" alt="Example" width="500"/>
+
+---
 #### `scTriangulate_summarize_celltype_stability()`
 - Summarize per-cluster metrics (confidence, SCCAF, doublet scores) across platforms.
 #### Example usages
