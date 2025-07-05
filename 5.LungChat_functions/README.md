@@ -256,6 +256,47 @@ Output
 3         Subpleural_FBs  6.034483 93.10345  3.533602e-01 Visium_RCTD_GSE250346_based  1.000000e+00
 ```
 ---
+#### `find_celltype_markers()`
+- Identify top marker genes for a specific cell type by calculating their differential expression and statistical significance, returning both a ranked table and a volcano plot to visualize the results.
+#### Example usages
+Identify top marker genes for T6
+```
+# Define Inputs and Find Markers
+marker_report <- find_celltype_markers(
+    sce = scTriangulate2,
+    celltype = "T6",
+    annotation_col = "TNiche",
+    platform = "xenium"
+)
+# Access and Print Both the Table and the Plot
+if (!is.null(marker_report)) {
+    # Print the ranked table of top marker genes
+    print(kable(marker_report$table, digits = 3, caption = "Top Marker Genes"))
+    
+    # Print the volcano plot
+    print(marker_report$plot)
+}
+```
+Output
+```
+Table: Top Marker Genes
+
+|gene   | logFC| P_Value| P_Adj| log10_P_Adj|significant |
+|:------|-----:|-------:|-----:|-----------:|:-----------|
+|COL1A1 | 3.647|       0|     0|     335.145|TRUE        |
+|MEG3   | 3.508|       0|     0|     335.145|TRUE        |
+|COL3A1 | 3.403|       0|     0|     335.145|TRUE        |
+|SFRP4  | 3.148|       0|     0|     335.145|TRUE        |
+|LUM    | 3.067|       0|     0|     335.145|TRUE        |
+|COL1A2 | 3.058|       0|     0|     335.145|TRUE        |
+|CTHRC1 | 3.047|       0|     0|     335.145|TRUE        |
+|DCN    | 2.268|       0|     0|     335.145|TRUE        |
+|POSTN  | 1.964|       0|     0|     335.145|TRUE        |
+|FN1    | 1.251|       0|     0|     335.145|TRUE        |
+```
+<img src="./figures/find_celltype_markers_1.png" alt="Example" width="700"/>
+
+---
 #### `find_top_markers_for_celltype()`
 - Identify top differentially expressed genes for a specific cell type per platform.
 #### Example usages
