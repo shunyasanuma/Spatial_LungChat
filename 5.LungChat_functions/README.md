@@ -284,6 +284,62 @@ CCN2_visium     CCN2 1.2009828 5.027688e-44 5.133828e-42
 CD79A_visium   CD79A 0.5044293 1.652513e-42 1.518660e-40
 ```
 ---
+#### `generate_marker_report()`
+- Analyzes the expression specificity of given genes across various cell type annotations, returning both a ranked statistical table and a dot plot summarizing the results.
+#### Example usages
+List cell types that "COL1A1", "AGER", "CD3D", "SFTPC" are differentially expressed.
+```
+# Define Inputs and Generate Outputs
+genes_of_interest <- c("COL1A1", "AGER", "CD3D", "SFTPC")
+annotations_to_process <- c("pruned")
+
+# Call the function
+marker_report <- generate_marker_report(
+    sce = scTriangulate2,
+    genes = genes_of_interest,
+    annotation_cols = annotations_to_process
+)
+
+
+# Access and Print Both the Table and the Plot
+if (!is.null(marker_report)) {
+    # Print the full, ranked data table
+    print(kable(marker_report$table, digits = 3, caption = "Marker Gene Specificity Ranking"))
+    
+    # Print the dot plot
+    print(marker_report$plot)
+}
+```
+Output (Portion)
+```
+Table: Marker Gene Specificity Ranking
+
+|Gene   |Platform |Cluster                                             | Mean_Expr| Pct_Expr| P_Value| P_Adj|
+|:------|:--------|:---------------------------------------------------|---------:|--------:|-------:|-----:|
+|COL1A1 |Visium   |pruned@TNiche@T6                                    |    13.681|   99.307|   0.000| 0.000|
+|COL1A1 |Xenium   |pruned@TNiche@T6                                    |    15.087|   99.837|   0.000| 0.000|
+|SFTPC  |Xenium   |pruned@TNiche@T11                                   |    18.464|   93.724|   0.000| 0.000|
+|CD3D   |Xenium   |pruned@Xenium_RCTD_LungMap_ref@T                    |     1.008|   60.615|   0.000| 0.000|
+|CD3D   |Xenium   |pruned@Final_CT@CD8+_T-cells                        |     1.052|   56.897|   0.000| 0.000|
+|SFTPC  |Visium   |pruned@TNiche@T11                                   |     0.732|   31.799|   0.000| 0.000|
+|AGER   |Xenium   |pruned@Final_CT@AT1                                 |     3.209|   79.104|   0.000| 0.000|
+|AGER   |Xenium   |pruned@Xenium_RCTD_LungMap_ref@AT1                  |     2.037|   57.009|   0.000| 0.000|
+|SFTPC  |Visium   |pruned@Visium_RCTD_LungMap_ref@AT2                  |     0.990|   46.392|   0.000| 0.000|
+|AGER   |Xenium   |pruned@TNiche@T11                                   |     0.427|   27.615|   0.000| 0.000|
+|COL1A1 |Xenium   |pruned@Final_CT@Inflammatory_FBs                    |     8.893|   99.107|   0.000| 0.000|
+|CD3D   |Visium   |pruned@Xenium_RCTD_LungMap_ref@T                    |     0.120|    7.821|   0.000| 0.000|
+|CD3D   |Xenium   |pruned@Visium_RCTD_LungMap_ref@B                    |     0.241|   14.815|   0.004| 0.065|
+|COL1A1 |Visium   |pruned@Final_CT@Inflammatory_FBs                    |     7.312|   99.107|   0.010| 0.167|
+|AGER   |Visium   |pruned@Xenium_RCTD_LungMap_ref@AT1                  |     0.047|    4.673|   0.017| 0.265|
+|SFTPC  |Xenium   |pruned@Xenium_RCTD_LungMap_ref@AT1                  |     1.336|   35.514|   0.019| 0.282|
+|CD3D   |Xenium   |pruned@Visium_RCTD_LungMap_ref@AEC                  |     0.323|   14.516|   0.021| 0.283|
+|SFTPC  |Visium   |pruned@Xenium_RCTD_LungMap_ref@AT1                  |     0.178|    8.411|   0.051| 0.653|
+|AGER   |Visium   |pruned@Visium_RCTD_LungMap_ref@AT2                  |     0.031|    3.093|   0.059| 0.719|
+|CD3D   |Xenium   |pruned@Visium_RCTD_LungMap_ref@Pericyte             |     0.273|   10.606|   0.065| 0.759|
+```
+<img src="./figures/generate_marker_report_1.png" alt="Example" width="900"/>
+
+---
 #### `plot_ARI_dotplot()`
 - Plot pairwise cluster overlap using dotplot and display Adjusted Rand Index (ARI).
 #### Example usages
