@@ -5,7 +5,9 @@
 
 [5.2. CellChat](#2-CellChat)
 
-[5.3. Ingestion](#3-Ingestion)
+[5.3. Neighbors enrichment_analysis](#3-Neighbors_enrichment_analysis)
+
+[5.4. Ingestion](#4-Ingestion)
 
 ---
 #### 1. Visualization & Analysis
@@ -630,7 +632,99 @@ Output
 81                  cDCs       Proliferating Myeloid        UGRP1 2.921859e-07    0
 82                  cDCs           SPP1+ Macrophages        UGRP1 4.818570e-06    0
 ```
+---
+#### 3. Neighbors enrichment_analysis
+- Compute enrichment score based on proximity on the connectivity graph of cell clusters by Palla, Spitzer et al. (2022) in Nature Methods.
+
+#### `create_enrichment_heatmap()`
+
+#### Example usages
+Neighbors enrichment Unaffected (Control) vs More_Affected (IPF)
+```
+create_enrichment_heatmap(
+    group="Unaffected",
+    cluster_key="final_CT",
+    hdf_path=hdf_file,
+    plot_style='blue_white_red'
+)
+
+create_enrichment_heatmap(
+    group="More_Affected",
+    cluster_key="final_CT",
+    hdf_path=hdf_file,
+    plot_style='blue_white_red'
+)
+```
+<img src="./figures/create_enrichment_heatmap_1.png" alt="Example" width="700"/>
+<img src="./figures/create_enrichment_heatmap_2.png" alt="Example" width="700"/>
 
 ---
-#### 3. Ingestion
+#### `analyze_and_plot_neighbors()`
+
+#### Example usages
+Cell Types Adjacent to AT1 in IPF samples
+```
+analyze_and_plot_neighbors(
+    target_cell_type='AT1',
+    group='More_Affected',
+    cluster_key='final_CT',
+    hdf_path=hdf_file
+)
+```
+Output
+```
+--- Cell Types Adjacent to AT1 in 'More_Affected' (Ranked by Z-score) ---
+AT2                            118.848048
+AT1                            103.512758
+Capillary                       76.301555
+Transitional AT2                65.948241
+KRT5-/KRT17+                    28.477810
+Alveolar Macrophages            21.376305
+Proliferating AT2               13.469133
+Activated Fibrotic FBs          11.945442
+NK/NKT                          11.847076
+RASC                             9.972993
+Myofibroblasts                   9.832857
+Monocytes/MDMs                   2.890602
+Neutrophils                      2.418871
+SPP1+ Macrophages                1.478766
+Proliferating Myeloid            1.202173
+Langerhans cells                 1.009718
+Proliferating NK/NKT             0.968093
+cDCs                             0.191929
+Mesothelial                     -0.170744
+Proliferating FBs               -0.628048
+PNEC                            -1.481705
+Proliferating B cells           -1.906034
+Basophils                       -1.967718
+Arteriole                       -2.865803
+Macrophages - IFN-activated     -2.923403
+Proliferating Airway            -3.038461
+Proliferating T-cells           -3.337711
+Interstitial Macrophages        -4.207676
+pDCs                            -4.238671
+Inflammatory FBs                -5.827108
+Migratory DCs                   -6.066847
+Secretory                       -6.428952
+Tregs                           -9.702840
+Subpleural FBs                 -11.180704
+Adventitial FBs                -11.693839
+Lymphatic                      -12.499068
+Mast                           -13.893562
+Alveolar FBs                   -14.469620
+Basal                          -17.038203
+Goblet                         -18.542233
+SMCs/Pericytes                 -21.949706
+Venous                         -22.633952
+CD8+ T-cells                   -22.978997
+Multiciliated                  -28.884334
+CD4+ T-cells                   -29.789971
+B cells                        -31.237197
+Plasma                         -36.390573
+Name: AT1, dtype: float64
+```
+<img src="./figures/analyze_and_plot_neighbors_1.png" alt="Example" width="700"/>
+
+---
+#### 4. Ingestion
 TO BE UPDATED 
