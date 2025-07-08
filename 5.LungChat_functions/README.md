@@ -16,15 +16,16 @@ Script: [`Spatial_functions.R`](./Spatial_functions.R)
 #### `plot_spatial()`
 - Visualize spatial annotation (categorical or numeric) from a SummarizedExperiment object.
 
-| **Parameter** | **Type**                                        | **Default**  | **Options**                                                                                                                                    | **Description**                                                                     |
-| ------------- | ----------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                                                                                              | H5AD-derived object loaded using `zellkonverter::readH5AD()`                        |
-| `annotation`  | character                                       | *(required)* | `pruned`, `Final_CT`, `Final_lineage`, `CNiche`, `TNiche`, `Visium_RCTD_LungMap_ref`, `Visium_RCTD_GSE250346_based`, `Xenium_RCTD_LungMap_ref`, `confidence` | Column name in `colData(obj)` used for coloring the spatial plot                    |
-| `title`       | character                                       | `NULL`       | —                                                                                                                                              | Custom plot title; if `NULL`, uses `"Spatial: <annotation>"`                        |
-| `point_size`  | numeric                                         | `0.5`        | Any positive number                                                                                                                            | Size of points in the scatterplot                                                   |
-| `base_size`   | numeric                                         | `12`         | Any positive number                                                                                                                            | Base font size for theme and legend                                                 |
-| `coord_flip`  | logical                                         | `FALSE`      | `TRUE`, `FALSE`                                                                                                                                | Whether to flip the Y-axis (e.g., Visium coordinate convention)                     |
-| `highlight`   | character vector                                | `NULL`       | One or more annotation levels (e.g., `c("AT1", "AT2")`)                                                                                        | If `annotation` is categorical, highlights selected levels in color, others in grey |
+| **Parameter**       | **Type**                                        | **Default**  | **Options**                                                              | **Description**                                                                 |
+| ------------------- | ----------------------------------------------- | ------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `obj`               | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                        | H5AD-derived object loaded using `zellkonverter::readH5AD()`                    |
+| `platform`          | character                                       | `"Xenium"`   | `"Xenium"`, `"Visium"`                                                   | Used to select the appropriate UMAP coordinate columns                          |
+| `annotation`        | character                                       | `"Final_CT"` | Any column in `colData(obj)`, e.g., `"Final_CT"`, `"pruned"`, `"TNiche"` | Column in `colData(obj)` used to color the UMAP plot                            |
+| `title`             | character                                       | `NULL`       | —                                                                        | Custom plot title; if `NULL`, uses `"<platform> UMAP: <annotation>"`            |
+| `point_size`        | numeric                                         | `0.5`        | Any positive number                                                      | Size of points in the UMAP scatterplot                                          |
+| `legend_point_size` | numeric                                         | `4`          | Any positive number                                                      | Size of points in the legend                                                    |
+| `highlight`         | character vector                                | `NULL`       | Subset of annotation levels, e.g., `c("AT1", "AT2")`                     | If set and `annotation` is a factor, highlights selected levels, others in grey |
+
 
 #### Example usages
 Generates a spatial scatterplot of scTriangulate2 cells or spots, colored by the "pruned" annotation to visualize cell type or cluster identity across tissue space.
@@ -55,6 +56,16 @@ plot_spatial(
 ---
 #### `plot_umap()`
 - Visualize UMAP embedding for Visium HD or Xenium platforms using metadata or highlights.
+| **Parameter**       | **Type**                                        | **Default**  | **Options**                                                              | **Description**                                                                 |
+| ------------------- | ----------------------------------------------- | ------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| `obj`               | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                        | H5AD-derived object loaded using `zellkonverter::readH5AD()`                    |
+| `platform`          | character                                       | `"Xenium"`   | `"Xenium"`, `"Visium"`                                                   | Used to select the appropriate UMAP coordinate columns                          |
+| `annotation`        | character                                       | `"Final_CT"` | Any column in `colData(obj)`, e.g., `"Final_CT"`, `"pruned"`, `"TNiche"` | Column in `colData(obj)` used to color the UMAP plot                            |
+| `title`             | character                                       | `NULL`       | —                                                                        | Custom plot title; if `NULL`, uses `"<platform> UMAP: <annotation>"`            |
+| `point_size`        | numeric                                         | `0.5`        | Any positive number                                                      | Size of points in the UMAP scatterplot                                          |
+| `legend_point_size` | numeric                                         | `4`          | Any positive number                                                      | Size of points in the legend                                                    |
+| `highlight`         | character vector                                | `NULL`       | Subset of annotation levels, e.g., `c("AT1", "AT2")`                     | If set and `annotation` is a factor, highlights selected levels, others in grey |
+
 #### Example usages
 Xenium UMAP
 ```
