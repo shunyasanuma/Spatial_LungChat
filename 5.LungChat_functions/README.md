@@ -5,7 +5,7 @@
 
 [5.2. CellChat](#2-CellChat)
 
-[5.3. Neighbors enrichment_analysis](#3-Neighbors_enrichment_analysis)
+[5.3. Neighbors enrichment_analysis](#3-neighbors-enrichment_analysis)
 
 [5.4. Ingestion](#4-Ingestion)
 
