@@ -119,6 +119,8 @@ plot_umap(scTriangulate2,
 | `low_color`   | character                                       | `"grey90"`                    | Any valid R color                                          | Color used for low expression                                             |
 | `high_color`  | character                                       | `"red"`                       | Any valid R color                                          | Color used for high expression                                            |
 
+[`The list of available genes is here.`](./available_genes_by_platform.md)
+
 #### Example usages
 ```
 plot_gene_spatial(scTriangulate2, 
@@ -148,9 +150,14 @@ rank_cross_platform_gene_correlation(
 ```
 Output
 ```
-   COL1A1    COL3A1    COL1A2   SCGB3A2     MARCO 
-0.8968483 0.6852229 0.6121173 0.5324030 0.4863397 
+     Gene Correlation
+1  COL1A1   0.8968483
+2  COL3A1   0.6852229
+3  COL1A2   0.6121173
+4 SCGB3A2   0.5324030
+5   MARCO   0.4863397
 ```
+<img src="./figures/rank_cross_platform_gene_correlation_1.png" alt="Example" width="500"/>
 
 ---
 #### `plot_cross_platform_gene_correlation()`
