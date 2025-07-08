@@ -6,4 +6,5 @@
 ### [5. LungChat (LLM) functions](5.LungChat_functions/README.md)
 - Visualization
 - CellChat (Cell-Cell communication analysis pakage developed by Jin et al.)
+- Neighbors enrichment_analysis (Squidpy, Spitzer et al)
 - Ingestion
