@@ -673,54 +673,55 @@ analyze_and_plot_neighbors(
 ```
 Output
 ```
---- Cell Types Adjacent to AT1 in 'More_Affected' (Ranked by Z-score) ---
-AT2                            118.848048
-AT1                            103.512758
-Capillary                       76.301555
-Transitional AT2                65.948241
-KRT5-/KRT17+                    28.477810
-Alveolar Macrophages            21.376305
-Proliferating AT2               13.469133
-Activated Fibrotic FBs          11.945442
-NK/NKT                          11.847076
-RASC                             9.972993
-Myofibroblasts                   9.832857
-Monocytes/MDMs                   2.890602
-Neutrophils                      2.418871
-SPP1+ Macrophages                1.478766
-Proliferating Myeloid            1.202173
-Langerhans cells                 1.009718
-Proliferating NK/NKT             0.968093
-cDCs                             0.191929
-Mesothelial                     -0.170744
-Proliferating FBs               -0.628048
-PNEC                            -1.481705
-Proliferating B cells           -1.906034
-Basophils                       -1.967718
-Arteriole                       -2.865803
-Macrophages - IFN-activated     -2.923403
-Proliferating Airway            -3.038461
-Proliferating T-cells           -3.337711
-Interstitial Macrophages        -4.207676
-pDCs                            -4.238671
-Inflammatory FBs                -5.827108
-Migratory DCs                   -6.066847
-Secretory                       -6.428952
-Tregs                           -9.702840
-Subpleural FBs                 -11.180704
-Adventitial FBs                -11.693839
-Lymphatic                      -12.499068
-Mast                           -13.893562
-Alveolar FBs                   -14.469620
-Basal                          -17.038203
-Goblet                         -18.542233
-SMCs/Pericytes                 -21.949706
-Venous                         -22.633952
-CD8+ T-cells                   -22.978997
-Multiciliated                  -28.884334
-CD4+ T-cells                   -29.789971
-B cells                        -31.237197
-Plasma                         -36.390573
+--- Cell Types Adjacent to AT1 in 'More_Affected' ---
+(Ranked by Z-score, showing Signed Log10 Values)
+AT2                            2.078631
+AT1                            2.019169
+Capillary                      1.888188
+Transitional AT2               1.825739
+KRT5-/KRT17+                   1.469495
+Alveolar Macrophages           1.349788
+Proliferating AT2              1.160443
+Activated Fibrotic FBs         1.112117
+NK/NKT                         1.108804
+RASC                           1.040325
+Myofibroblasts                 1.034743
+Monocytes/MDMs                 0.590017
+Neutrophils                    0.533883
+SPP1+ Macrophages              0.394236
+Proliferating Myeloid          0.342851
+Langerhans cells               0.303135
+Proliferating NK/NKT           0.294046
+cDCs                           0.076250
+Mesothelial                   -0.068462
+Proliferating FBs             -0.211667
+PNEC                          -0.394750
+Proliferating B cells         -0.463301
+Basophils                     -0.472423
+Arteriole                     -0.587240
+Macrophages - IFN-activated   -0.593663
+Proliferating Airway          -0.606216
+Proliferating T-cells         -0.637261
+Interstitial Macrophages      -0.716644
+pDCs                          -0.719221
+Inflammatory FBs              -0.834237
+Migratory DCs                 -0.849226
+Secretory                     -0.870928
+Tregs                         -1.029499
+Subpleural FBs                -1.085672
+Adventitial FBs               -1.103593
+Lymphatic                     -1.130304
+Mast                          -1.172999
+Alveolar FBs                  -1.189480
+Basal                         -1.256193
+Goblet                        -1.290974
+SMCs/Pericytes                -1.360777
+Venous                        -1.373536
+CD8+ T-cells                  -1.379831
+Multiciliated                 -1.475444
+CD4+ T-cells                  -1.488409
+B cells                       -1.508357
+Plasma                        -1.572762
 Name: AT1, dtype: float64
 ```
 <img src="./figures/analyze_and_plot_neighbors_1.png" alt="Example" width="700"/>
