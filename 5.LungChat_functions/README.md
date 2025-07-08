@@ -140,6 +140,13 @@ plot_gene_spatial(scTriangulate2,
 ---
 #### `rank_cross_platform_gene_correlation()`
 - Rank genes by Pearson correlation across Xenium-Visium matched expression.
+
+| **Parameter** | **Type**                                        | **Default**  | **Options**              | **Description**                                                               |
+| ------------- | ----------------------------------------------- | ------------ | ------------------------ | ----------------------------------------------------------------------------- |
+| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                        | Object containing gene expression from both Xenium and Visium platforms       |
+| `top_genes`   | numeric                                         | `5`          | Any positive integer     | Number of top correlated gene pairs to return and visualize                   |
+| `layer`       | character                                       | `"X"`        | Must match an assay name | Assay layer (e.g., `"X"`, `"counts"`, `"logcounts"`) used for expression data |
+
 #### Example usages
 Top 5 highly correlated genes (Visium HD - Xenium)
 ```
@@ -162,6 +169,20 @@ Output
 ---
 #### `plot_cross_platform_gene_correlation()`
 - Plot cumulative Pearson correlation across best-matched Visium-Xenium spots for a gene.
+
+| **Parameter**     | **Type**                                        | **Default**             | **Options**                                                                             | **Description**                                                           |
+| ----------------- | ----------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `obj`             | `SingleCellExperiment` / `SummarizedExperiment` | *(required)*            | —                                                                                       | Object containing Xenium–Visium aligned expression data with paired genes |
+| `gene`            | character                                       | *(required)*            | Must match a base gene name (e.g., `"AGER"`) with both `_xenium` and `_visium` suffixes | Gene to plot cross-platform expression for                                |
+| `layer`           | character                                       | `"X"`                   | Any assay in `assayNames(obj)`                                                          | Assay layer from which to extract expression values                       |
+| `log1p`           | logical                                         | `TRUE`                  | `TRUE`, `FALSE`                                                                         | Whether to apply log1p transformation to expression values                |
+| `platform_labels` | character vector (length = 2)                   | `c("Xenium", "Visium")` | Custom platform names                                                                   | Labels to display in plot legend for the two platforms                    |
+| `point_size`      | numeric                                         | `0.5`                   | Any positive number                                                                     | Size of individual points in the scatterplot                              |
+| `alpha`           | numeric                                         | `0.5`                   | 0–1                                                                                     | Transparency of points in the scatterplot                                 |
+| `title`           | character                                       | `NULL`                  | —                                                                                       | Custom plot title; if `NULL`, defaults to `"Gene: <gene>"`                |
+
+[`The list of available genes is here.`](./available_genes_by_platform.md)
+
 #### Example usages
 Cumulative Pearson correlation (COL1A1)
 ```
@@ -178,6 +199,13 @@ plot_cross_platform_gene_correlation(
 ---
 #### `generate_stability_report()`
 - Summarize per-cluster metrics (confidence, reassign, SCCAF, TF-IDF 10, TF-IDF 5m Shapley)
+
+| **Parameter**     | **Type**                                        | **Default**  | **Options**                                          | **Description**                                                      |
+| ----------------- | ----------------------------------------------- | ------------ | ---------------------------------------------------- | -------------------------------------------------------------------- |
+| `sce`             | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                    | Object containing stability metric columns and cell type annotations |
+| `celltype_labels` | `list` (named character vectors)                | *(required)* | Format: `list("Annotation" = c("Label1", "Label2"))` | Specifies which cell type labels (per annotation) to evaluate        |
+
+[`The list of available annotations is here.`](./annotation_labels.md)
 
 #### Example usages
 Stability of T cells 
