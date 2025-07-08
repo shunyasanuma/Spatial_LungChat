@@ -170,16 +170,16 @@ Output
 #### `plot_cross_platform_gene_correlation()`
 - Plot cumulative Pearson correlation across best-matched Visium-Xenium spots for a gene.
 
-| **Parameter**     | **Type**                                        | **Default**             | **Options**                                                                             | **Description**                                                           |
-| ----------------- | ----------------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| `obj`             | `SingleCellExperiment` / `SummarizedExperiment` | *(required)*            | —                                                                                       | Object containing Xenium–Visium aligned expression data with paired genes |
-| `gene`            | character                                       | *(required)*            | Must match a base gene name (e.g., `"AGER"`) with both `_xenium` and `_visium` suffixes | Gene to plot cross-platform expression for                                |
-| `layer`           | character                                       | `"X"`                   | Any assay in `assayNames(obj)`                                                          | Assay layer from which to extract expression values                       |
-| `log1p`           | logical                                         | `TRUE`                  | `TRUE`, `FALSE`                                                                         | Whether to apply log1p transformation to expression values                |
-| `platform_labels` | character vector (length = 2)                   | `c("Xenium", "Visium")` | Custom platform names                                                                   | Labels to display in plot legend for the two platforms                    |
-| `point_size`      | numeric                                         | `0.5`                   | Any positive number                                                                     | Size of individual points in the scatterplot                              |
-| `alpha`           | numeric                                         | `0.5`                   | 0–1                                                                                     | Transparency of points in the scatterplot                                 |
-| `title`           | character                                       | `NULL`                  | —                                                                                       | Custom plot title; if `NULL`, defaults to `"Gene: <gene>"`                |
+| **Parameter** | **Type**                                        | **Default**   | **Options**                                   | **Description**                                                                |
+| ------------- | ----------------------------------------------- | ------------- | --------------------------------------------- | ------------------------------------------------------------------------------ |
+| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)*  | —                                             | Object containing cross-platform expression matrix and metadata                |
+| `gene_name`   | character                                       | *(required)*  | Any gene base name present with both suffixes | Gene to compare between platforms (must exist with appropriate suffixes)       |
+| `ID1_col`     | character                                       | `"Visium_ID"` | Column name in `colData(obj)`                 | Column storing Visium-matched cell/spot IDs                                    |
+| `ID2_col`     | character                                       | `"Xenium_ID"` | Column name in `colData(obj)`                 | Column storing Xenium-matched cell/spot IDs                                    |
+| `hline`       | numeric                                         | `0.9`         | `NULL` or any numeric between -1 and 1        | Horizontal line for reference on the correlation plot                          |
+| `y_range`     | numeric vector (length 2)                       | `c(0, 1)`     | Any valid range of Pearson correlation values | Y-axis limits for the plot                                                     |
+| `title`       | character                                       | `NULL`        | —                                             | Custom plot title; if `NULL`, defaults to `"Gene: Correlation vs Top Matched"` |
+
 
 [`The list of available genes is here.`](./available_genes_by_platform.md)
 
@@ -251,41 +251,20 @@ Table: Summary of Cell Type Stability Metrics
 <img src="./figures/generate_stability_report_1.png" alt="Example" width="800"/>
 
 ---
-#### `scTriangulate_summarize_celltype_stability()`
-- Summarize per-cluster metrics (confidence, SCCAF, doublet scores) across platforms.
-#### Example usages
-Stability of T cells 
-```
-labels_list <- list(
-    Final_CT = c("CD4+_T-cells", "CD8+_T-cells", "Tregs", "Proliferating_T-cells"),
-    Visium_RCTD_LungMap_ref = c("T"),
-    Visium_RCTD_GSE250346_based = c("CD4+_T-cells", "CD8+_T-cells", "Tregs", "Proliferating_T-cells"),
-    Xenium_RCTD_LungMap_ref = c("T")
-)
-
-scTriangulate_summarize_celltype_stability(
-    sce = scTriangulate2,
-    celltype_labels = labels_list
-)
-```
-Output (portion)
-```
-   Cluster  Platform confidence SCCAF.Final_CT SCCAF.Visium_RCTD_Lu…¹ SCCAF.Visium_RCTD_GS…² SCCAF.Xenium_RCTD_Lu…³
-   <chr>    <chr>         <dbl>          <dbl>                  <dbl>                  <dbl>                  <dbl>
- 1 Final_C… Xenium        0.545          0.767                  0.738                  0.498                  0.974
- 2 Final_C… Xenium        0.837          0.722                  0.742                  0.555                  0.980
- 3 Final_C… Xenium        1              0                      0.786                  0.413                  0.986
- 4 Final_C… Xenium        0.568          0.292                  0.709                  0.541                  0.982
- 5 Visium_… Xenium        0.560          0.648                  0.725                  0.290                  0.920
- 6 Visium_… Xenium        0.577          0.699                  0.740                  0.304                  0.940
- 7 Visium_… Xenium        0.634          0.651                  0.745                  0.125                  0.934
- 8 Visium_… Xenium        0.589          0.663                  0.766                  0.413                  0.946
- 9 Visium_… Xenium        0.553          0.654                  0.789                  0.334                  0.947
-10 Xenium_… Xenium        0.668          0.683                  0.741                  0.512                  0.986
-```
----
 #### `rank_marker_specificity()`
 - Rank how specific a gene is to a cell type using one-sided t-tests and FDR correction.
+
+| **Parameter**  | **Type**                                        | **Default**             | **Options**                                           | **Description**                                                               |
+| -------------- | ----------------------------------------------- | ----------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `sce`          | `SingleCellExperiment` / `SummarizedExperiment` | *(required)*            | —                                                     | Object containing gene expression matrix and cluster annotations              |
+| `gene_name`    | character                                       | `"COL1A1"`              | Any gene (with or without `_xenium`/`_visium` suffix) | Base name of the gene to assess for cluster-specific enrichment               |
+| `cluster_cols` | character vector                                | `c("pruned")`           | One or more column names in `colData(sce)`            | Metadata columns used to define clusters or cell types                        |
+| `assay_name`   | character                                       | `"X"`                   | Must exist in `assayNames(sce)`                       | Expression matrix to use                                                      |
+| `platforms`    | character vector                                | `c("Xenium", "Visium")` | Subset of `c("Xenium", "Visium")`                     | Platforms to include when filtering by `meta$Platform`, if such column exists |
+| `top_n`        | integer or `NULL`                               | `NULL`                  | `NULL` (all clusters) or a positive integer           | If set, returns only the top N cluster-gene combinations by adjusted p-value  |
+
+[`The list of available genes is here.`](./available_genes_by_platform.md)
+
 #### Example usages
 COL1A1 - pruned, both Visium and Xenium
 ```
@@ -334,6 +313,19 @@ Output
 ---
 #### `find_celltype_markers()`
 - Identify top marker genes for a specific cell type by calculating their differential expression and statistical significance, returning both a ranked table and a volcano plot to visualize the results.
+
+| **Parameter**     | **Type**                                        | **Default**  | **Options**                                   | **Description**                                                                |
+| ----------------- | ----------------------------------------------- | ------------ | --------------------------------------------- | ------------------------------------------------------------------------------ |
+| `sce`             | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                             | Object containing normalized gene expression and metadata                      |
+| `celltype`        | character                                       | *(required)* | Any value in `colData(sce)[[annotation_col]]` | Cell type label to compare against all others                                  |
+| `annotation_col`  | character                                       | *(required)* | A column name in `colData(sce)`               | Metadata column that defines cell types or clusters                            |
+| `platform`        | character                                       | `"Xenium"`   | `"Xenium"`, `"Visium"`                        | Platform used to select gene suffix (e.g., `_xenium`) for expression filtering |
+| `assay_name`      | character                                       | `"X"`        | Any value in `assayNames(sce)`                | Expression assay to use                                                        |
+| `top_n`           | integer                                         | `10`         | Any positive integer                          | Number of top-ranked marker genes to return                                    |
+| `logfc_threshold` | numeric                                         | `0.25`       | ≥ 0                                           | Minimum log2 fold change threshold to consider as significant                  |
+| `padj_threshold`  | numeric                                         | `0.05`       | (0, 1)                                        | Adjusted p-value (FDR) threshold for statistical significance                  |
+
+
 #### Example usages
 Identify top marker genes for T6
 ```
@@ -373,36 +365,20 @@ Table: Top Marker Genes
 <img src="./figures/find_celltype_markers_1.png" alt="Example" width="700"/>
 
 ---
-#### `find_top_markers_for_celltype()`
-- Identify top differentially expressed genes for a specific cell type per platform.
-#### Example usages
-Top 10 marker genes for B cells
-```
-find_top_markers_for_celltype(
-    obj = scTriangulate2,
-    celltype = "B",
-    annotation_col = "Visium_RCTD_LungMap_ref",
-    platform_suffix = "visium",
-    top_n = 10
-)
-```
-Output
-```
-                gene     logFC      P_Value        P_Adj
-CHGB_visium     CHGB 0.6706791 2.218767e-51 6.111790e-49
-PSMB9_visium   PSMB9 0.3913351 1.331840e-51 6.111790e-49
-ROBO4_visium   ROBO4 0.3908860 2.052060e-51 6.111790e-49
-IFNAR2_visium IFNAR2 0.3894054 2.660191e-51 6.111790e-49
-WIPF1_visium   WIPF1 0.3885079 4.794008e-51 8.811386e-49
-LMBRD1_visium LMBRD1 0.3874692 6.982941e-51 9.167604e-49
-STAT3_visium   STAT3 0.3868874 6.514417e-51 9.167604e-49
-COL8A1_visium COL8A1 0.3840641 2.360717e-50 2.711874e-48
-CCN2_visium     CCN2 1.2009828 5.027688e-44 5.133828e-42
-CD79A_visium   CD79A 0.5044293 1.652513e-42 1.518660e-40
-```
----
 #### `generate_marker_report()`
 - Analyzes the expression specificity of given genes across various cell type annotations, returning both a ranked statistical table and a dot plot summarizing the results.
+
+| **Parameter**     | **Type**                                        | **Default**  | **Options**                                                           | **Description**                                                              |
+| ----------------- | ----------------------------------------------- | ------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `obj`             | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                     | Object containing expression data and cell metadata                          |
+| `genes`           | `character vector`                              | *(required)* | Any set of gene names (e.g., `"COL1A1"`, `"AGER"`, `"CD3D"`)          | Gene names to test for enrichment                                            |
+| `annotation_cols` | `character vector`                              | *(required)* | Must match columns in `colData(obj)` (e.g., `"Final_CT"`, `"pruned"`) | Annotation columns used to group cells for differential expression testing   |
+| `assay_name`      | `character`                                     | `"X"`        | Any valid assay in `assayNames(obj)`                                  | Assay layer to pull expression data from                                     |
+| `min_pct`         | `numeric`                                       | `5`          | 0–100                                                                 | Minimum percentage of expressing cells in a cluster to include the gene      |
+| `max_genes_plot`  | `integer`                                       | `50`         | Positive integer or `NULL`                                            | Max number of genes to display in dot plot; `NULL` shows all passing filters |
+
+[`The list of available genes is here.`](./available_genes_by_platform.md)
+
 #### Example usages
 List cell types that "COL1A1", "AGER", "CD3D", "SFTPC" are differentially expressed.
 ```
@@ -412,7 +388,7 @@ annotations_to_process <- c("pruned")
 
 # Call the function
 marker_report <- generate_marker_report(
-    sce = scTriangulate2,
+    obj = scTriangulate2,
     genes = genes_of_interest,
     annotation_cols = annotations_to_process
 )
@@ -459,6 +435,15 @@ Table: Marker Gene Specificity Ranking
 ---
 #### `plot_ARI_dotplot()`
 - Plot pairwise cluster overlap using dotplot and display Adjusted Rand Index (ARI).
+
+| **Parameter** | **Type**                                         | **Default**  | **Options**                                                                                                                                    | **Description**                                                            |
+| ------------- | ------------------------------------------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `obj`         | `SingleCellExperiment` or `SummarizedExperiment` | *(required)* | —                                                                                                                                              | Object containing cell metadata with clustering annotations.               |
+| `annotation1` | `character`                                      | *(required)* | `pruned`, `Final_CT`, `Final_lineage`, `CNiche`, `TNiche`, `Visium_RCTD_LungMap_ref`, `Visium_RCTD_GSE250346_based`, `Xenium_RCTD_LungMap_ref` | First clustering annotation to compare.                                    |
+| `annotation2` | `character`                                      | *(required)* | `pruned`, `Final_CT`, `Final_lineage`, `CNiche`, `TNiche`, `Visium_RCTD_LungMap_ref`, `Visium_RCTD_GSE250346_based`, `Xenium_RCTD_LungMap_ref` | Second clustering annotation to compare.                                   |
+| `title`       | `character` or `NULL`                            | `NULL`       | Custom string or `NULL`                                                                                                                        | Optional plot title; if `NULL`, auto-generates a title with the ARI value. |
+| `size_range`  | `numeric vector (length = 2)`                    | `c(1, 10)`   | Any numeric range                                                                                                                              | Range of point sizes in the dot plot based on cross-tabulated frequency.   |
+
 #### Example usages
 ARI between Visium HD and Xenium RCTD based on LungMap ref
 ```
@@ -472,23 +457,17 @@ plot_ARI_dotplot(
 <img src="./figures/plot_ARI_dotplot_1.png" alt="Example" width="900"/>
 
 ---
-#### `plot_marker_expression_dotplot()`
-- Show dot plot of average expression and detection rate for selected genes by group.
-#### Example usages
-Visualizes the expression of selected marker genes across annotated cell types in a dot plot, faceted by platform using annotations from the `pruned` column
-```
-plot_marker_expression_dotplot(
-    obj = scTriangulate2,
-    genes = c("COL1A1", "AGER", "CD3D", "SFTPC"),
-    platform = c("visium", "xenium"),
-    annotation = "pruned"
-)
-```
-<img src="./figures/plot_marker_expression_dotplot_1.png" alt="Example" width="600"/>
-
----
 #### `plot_cluster_composition_groupedbar()`
 - Compare cluster or cell-type compositions between one or two annotations using barplots.
+
+| **Parameter** | **Type**                                        | **Default**  | **Options**                                                                                                                                    | **Description**                                                             |
+| ------------- | ----------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                                                                                              | Object containing clustering annotations and metadata in `colData`.         |
+| `annotation`  | `character vector` (length 1 or 2)              | *(required)* | `pruned`, `Final_CT`, `Final_lineage`, `CNiche`, `TNiche`, `Visium_RCTD_LungMap_ref`, `Visium_RCTD_GSE250346_based`, `Xenium_RCTD_LungMap_ref` | One or two annotation columns to compare cluster composition.               |
+| `palette`     | named `character` vector or `NULL`              | `NULL`       | e.g., `c("Visium" = "blue", "Xenium" = "red")`                                                                                                 | Custom fill colors for annotation sources. If `NULL`, uses default palette. |
+| `title`       | `character` or `NULL`                           | `NULL`       | —                                                                                                                                              | Custom plot title. If `NULL`, uses `"Cluster Composition Comparison"`.      |
+| `rotate_x`    | `logical`                                       | `TRUE`       | `TRUE`, `FALSE`                                                                                                                                | Whether to rotate x-axis labels by 45° for readability.                     |
+
 #### Example usages
 `pruned` cell type composition
 ```
@@ -511,6 +490,16 @@ plot_cluster_composition_groupedbar(
 ---
 #### `compare_annotations_via_heatmap()`
 - Visualize overlap between two annotations using a normalized confusion matrix heatmap.
+
+| **Parameter** | **Type**                                        | **Default**  | **Options**                                                                                                                                    | **Description**                                                       |
+| ------------- | ----------------------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                                                                                              | Object containing annotation metadata in `colData`.                   |
+| `annotation1` | `character`                                     | *(required)* | `pruned`, `Final_CT`, `Final_lineage`, `CNiche`, `TNiche`, `Visium_RCTD_LungMap_ref`, `Visium_RCTD_GSE250346_based`, `Xenium_RCTD_LungMap_ref` | First annotation column to use as heatmap rows.                       |
+| `annotation2` | `character`                                     | *(required)* | Same as `annotation1`                                                                                                                          | Second annotation column to use as heatmap columns.                   |
+| `normalize`   | `character`                                     | `"none"`     | `"none"`, `"row"`, `"column"`, `"both"`                                                                                                        | Normalize values by row, column, both, or not at all (raw counts).    |
+| `palette`     | `character`                                     | `"Blues"`    | Any valid palette from `RColorBrewer::brewer.pal.info` (e.g., `"Reds"`, `"Purples"`)                                                           | Color palette for the heatmap fill.                                   |
+| `title`       | `character` or `NULL`                           | `NULL`       | —                                                                                                                                              | Custom plot title. If `NULL`, uses `"Annotation Comparison Heatmap"`. |
+
 #### Example usages
 Comparison between `pruned` and `Final_CT`
 ```
@@ -526,6 +515,19 @@ compare_annotations_via_heatmap(
 ---
 #### `visualize_matched_pairs_scatter()`
 - Scatterplot showing gene expression correlation across Visium and Xenium matched spots.
+
+| **Parameter**      | **Type**                                    | **Default**  | **Options / Example Values** | **Description**                                                       |
+| ------------------ | ------------------------------------------- | ------------ | ---------------------------- | --------------------------------------------------------------------- |
+| `obj`              | `SingleCellExperiment` or compatible object | *(required)* | —                            | Object with gene expression matrix and matched Visium/Xenium entries. |
+| `gene`             | `character`                                 | *(required)* | e.g., `"COL1A1"`             | Base gene name (assumes suffixes `_visium` and `_xenium` exist).      |
+| `layer`            | `character`                                 | `"X"`        | Any valid assay layer        | Layer from which to extract expression data.                          |
+| `log1p`            | `logical`                                   | `TRUE`       | `TRUE`, `FALSE`              | Apply log(1 + x) transformation to expression values.                 |
+| `point_size`       | `numeric`                                   | `0.4`        | e.g., `0.2`, `0.5`, `1.0`    | Size of scatter plot points.                                          |
+| `alpha`            | `numeric`                                   | `0.6`        | Range: 0–1                   | Opacity of scatter plot points.                                       |
+| `show_correlation` | `logical`                                   | `FALSE`      | `TRUE`, `FALSE`              | If `TRUE`, displays Pearson correlation in the title.                 |
+| `title`            | `character` o                               |              |                              |                                                                       |
+
+[`The list of available genes is here.`](./available_genes_by_platform.md)
 #### Example usages
 COL1A1 correlation between Visium HD and Xenium
 ```
