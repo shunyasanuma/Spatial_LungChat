@@ -26,6 +26,7 @@ Script: [`Spatial_functions.R`](./Spatial_functions.R)
 | `legend_point_size` | numeric                                         | `4`          | Any positive number                                                      | Size of points in the legend                                                    |
 | `highlight`         | character vector                                | `NULL`       | Subset of annotation levels, e.g., `c("AT1", "AT2")`                     | If set and `annotation` is a factor, highlights selected levels, others in grey |
 
+[`The list of available annotations is here.`](./annotation_labels.md)
 
 #### Example usages
 Generates a spatial scatterplot of scTriangulate2 cells or spots, colored by the "pruned" annotation to visualize cell type or cluster identity across tissue space.
@@ -56,6 +57,7 @@ plot_spatial(
 ---
 #### `plot_umap()`
 - Visualize UMAP embedding for Visium HD or Xenium platforms using metadata or highlights.
+
 | **Parameter**       | **Type**                                        | **Default**  | **Options**                                                              | **Description**                                                                 |
 | ------------------- | ----------------------------------------------- | ------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------- |
 | `obj`               | `SingleCellExperiment` / `SummarizedExperiment` | *(required)* | —                                                                        | H5AD-derived object loaded using `zellkonverter::readH5AD()`                    |
@@ -65,6 +67,8 @@ plot_spatial(
 | `point_size`        | numeric                                         | `0.5`        | Any positive number                                                      | Size of points in the UMAP scatterplot                                          |
 | `legend_point_size` | numeric                                         | `4`          | Any positive number                                                      | Size of points in the legend                                                    |
 | `highlight`         | character vector                                | `NULL`       | Subset of annotation levels, e.g., `c("AT1", "AT2")`                     | If set and `annotation` is a factor, highlights selected levels, others in grey |
+
+[`The list of available annotations is here.`](./annotation_labels.md)
 
 #### Example usages
 Xenium UMAP
@@ -102,6 +106,19 @@ plot_umap(scTriangulate2,
 ---
 #### `plot_gene_spatial()`
 - Plot spatial gene expression for Visium or Xenium using platform-specific coordinates.
+
+| **Parameter** | **Type**                                        | **Default**                   | **Options**                                                | **Description**                                                           |
+| ------------- | ----------------------------------------------- | ----------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)*                  | —                                                          | H5AD-derived object loaded using `zellkonverter::readH5AD()`              |
+| `gene`        | character                                       | *(required)*                  | Must match a row in `rownames(assay(obj))`, e.g., `"AGER"` | Gene to visualize (suffix added based on platform)                        |
+| `platform`    | character                                       | `"Xenium"`                    | `"Xenium"`, `"Visium"`                                     | Platform used to determine spatial columns and gene suffix                |
+| `x_col`       | character                                       | `"X_xenium_norm"` (if Xenium) | e.g., `"X_visium_norm"`, `"X_xenium_norm"`                 | Column in `colData(obj)` for X coordinates (auto-set by platform if NULL) |
+| `y_col`       | character                                       | `"Y_xenium_norm"` (if Xenium) | e.g., `"Y_visium_norm"`, `"Y_xenium_norm"`                 | Column in `colData(obj)` for Y coordinates (auto-set by platform if NULL) |
+| `title`       | character                                       | `NULL`                        | —                                                          | Custom plot title; if NULL, defaults to `"Spatial Expression of <gene>"`  |
+| `point_size`  | numeric                                         | `0.5`                         | Any positive number                                        | Size of points on the scatterplot                                         |
+| `low_color`   | character                                       | `"grey90"`                    | Any valid R color                                          | Color used for low expression                                             |
+| `high_color`  | character                                       | `"red"`                       | Any valid R color                                          | Color used for high expression                                            |
+
 #### Example usages
 ```
 plot_gene_spatial(scTriangulate2, 
