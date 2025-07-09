@@ -543,11 +543,30 @@ visualize_matched_pairs_scatter(
 #### 2. CellChat
 Cell-Cell communication analysis pakage developed by Jin et al.
 
+#### Pre-processing
+```
+# Pre-processing
+library(CellChat)
+# Initialize output list to store group sizes
+groupSizes <- list()
+# Loop over annotations and affect groups
+for (annot in names(CellChat_Squidpy$CellChat)) {
+  groupSizes[[annot]] <- list()
+  for (affect in names(CellChat_Squidpy$CellChat[[annot]])) {
+    obj <- CellChat_Squidpy$CellChat[[annot]][[affect]]
+    # Store group size table
+    groupSizes[[annot]][[affect]] <- as.numeric(table(obj@idents))
+    # Update with centrality computation
+    CellChat_Squidpy$CellChat[[annot]][[affect]] <- netAnalysis_computeCentrality(obj)
+  }
+}
+```
+
 #### `netVisual_circle()`
 - Circle plot of cell-cell communication network
 ```
-netVisual_circle(CellChat_combined$Xenium_IPF_Author@net$count, 
-                 vertex.weight = groupSizes$Xenium_IPF_Author, 
+netVisual_circle(CellChat_Squidpy[["CellChat"]][["Final_CT"]][["Unaffected"]]@net$count, 
+                 vertex.weight = groupSizes$CellChat_Squidpy[["CellChat"]][["Final_CT"]][["Unaffected"]], 
                  vertex.label.cex = 0.7, 
                  margin = 0.2, 
                  remove.isolate = TRUE)
