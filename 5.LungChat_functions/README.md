@@ -9,9 +9,11 @@
 
 [5.4. Ingestion](#4-Ingestion)
 
+[5.5. Ingestion](#5-Ingestion)
+
 ---
 #### 1. Visualization & Analysis
-Script: [`Spatial_functions.R`](./Spatial_functions_v4.R)
+Script: [`Spatial_functions.R`](./Spatial_functions_v5.R)
 
 #### `plot_spatial()`
 - Visualize spatial annotation (categorical or numeric) from a SummarizedExperiment object.
@@ -895,5 +897,29 @@ Output
 <img src="./figures/analyze_and_plot_neighbors_1.png" alt="Example" width="700"/>
 
 ---
-#### 4. Ingestion
+#### 4. ToppCell
+- Performs cell type enrichment analysis by comparing input gene sets to transcriptional profiles of curated single-cell clusters across multiple tissues and platforms, integrating annotations from large-scale consortia, developed by Chen et al.
+
+#### `get_toppcell_enrichment()`
+#### Example usages
+```
+# 1. Define the list of genes you want to analyze
+gene_list <- c("SFTPC","SFTPB","SFTPA1","NAPSA","LAMP3",
+               "ABCA3","SLC34A2","ETV5","SFTA2","PGC")
+
+# 2. Call the enrichment function
+get_toppcell_enrichment(gene_list)
+```
+Output
+```
+  Category                                       ID                                                                                                             Name       PValue  QValueFDRBH  QValueFDRBY
+1 ToppCell cf27b4ac4d0caa6f9b068dc8ea93472470a01a4d             390C-Epithelial_cells-Epithelial-A_(AT2)-|390C / Donor, Lineage, Cell class and subclass (all cells) 2.430753e-25 1.385033e-22 1.215504e-21
+2 ToppCell 731def6d82814ebac1a400bc7aea5f6da43ec960              390C-Epithelial_cells-Epithelial-A_(AT2)|390C / Donor, Lineage, Cell class and subclass (all cells) 2.430753e-25 1.385033e-22 1.215504e-21
+3 ToppCell b0ed8cb6000ce8bf94444307e4b7b3574fa3fab2  367C-Epithelial_cells-Epithelial-A_(AT2)|Epithelial_cells / Donor, Lineage, Cell class and subclass (all cells) 3.133866e-25 1.385033e-22 1.215504e-21
+4 ToppCell 3aea6207a011ad55a1aeb2ed9fb54d31b23694b5 367C-Epithelial_cells-Epithelial-A_(AT2)-|Epithelial_cells / Donor, Lineage, Cell class and subclass (all cells) 3.133866e-25 1.385033e-22 1.215504e-21
+5 ToppCell 2a8338e94937686a148b5433515700ca0f674058             367C-Epithelial_cells-Epithelial-A_(AT2)-|367C / Donor, Lineage, Cell class and subclass (all cells) 1.021566e-24 1.385033e-22 1.215504e-21
+```
+
+---
+#### 5. Ingestion
 TO BE UPDATED 
