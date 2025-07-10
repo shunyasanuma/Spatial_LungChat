@@ -540,6 +540,37 @@ visualize_matched_pairs_scatter(
 <img src="./figures/visualize_matched_pairs_scatter_1.png" alt="Example" width="700"/>
 
 ---
+#### `generate_de_volcano_plot()`
+- Generate table and volcano plot of DE genes
+#### Example usages
+Indentify DEGs in 'More_Affected' in IPF samples comapred to 'Unaffected' control samples
+```
+generate_de_volcano_plot(
+   obj_list = CellChat_Squidpy[["CellChat"]][["TNiche"]],
+   group_1 = "More_Affected",
+   group_2 = "Unaffected",
+   top_n = 100,
+   label_top_n = 20
+ )
+```
+Output (Top 10 genes)
+```
+$table
+         Gene p_val avg_log2FC pct.1 pct.2 p_val_adj log10_padj             Sig
+1       MS4A1     0   3.928060 0.051 0.008         0        300   Up in Group 1
+2       CD79A     0   3.757472 0.066 0.006         0        300   Up in Group 1
+3         CA4     0  -3.645654 0.011 0.111         0        300 Down in Group 1
+4        MMP7     0   3.191984 0.076 0.016         0        300   Up in Group 1
+5      JCHAIN     0   3.188527 0.252 0.045         0        300   Up in Group 1
+6       SFRP2     0   3.173698 0.203 0.030         0        300   Up in Group 1
+7   TNFRSF13C     0   3.107436 0.057 0.012         0        300   Up in Group 1
+8       FOXP3     0   2.890871 0.016 0.003         0        300   Up in Group 1
+9        FCN3     0  -2.884330 0.035 0.195         0        300 Down in Group 1
+10       AGER     0  -2.841862 0.022 0.116         0        300 Down in Group 1
+```
+<img src="./figures/generate_de_volcano_plot_1.png" alt="Example" width="700"/>
+
+---
 #### 2. CellChat
 Cell-Cell communication analysis pakage developed by Jin et al.
 
