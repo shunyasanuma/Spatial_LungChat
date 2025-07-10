@@ -606,14 +606,16 @@ Cell-Cell communication analysis pakage developed by Jin et al.
 library(CellChat)
 # Initialize output list to store group sizes
 groupSizes <- list()
-# Loop over annotations and affect groups
 for (annot in names(CellChat_Squidpy$CellChat)) {
   groupSizes[[annot]] <- list()
   for (affect in names(CellChat_Squidpy$CellChat[[annot]])) {
     obj <- CellChat_Squidpy$CellChat[[annot]][[affect]]
-    # Store group size table
-    groupSizes[[annot]][[affect]] <- as.numeric(table(obj@idents))
-    # Update with centrality computation
+    
+    # Match idents to ordering in the net$count matrix
+    idents_order <- rownames(obj@net$count)
+    groupSizes[[annot]][[affect]] <- as.numeric(table(factor(obj@idents, levels = idents_order)))
+    
+    # Optional: recompute centrality (no change)
     CellChat_Squidpy$CellChat[[annot]][[affect]] <- netAnalysis_computeCentrality(obj)
   }
 }
