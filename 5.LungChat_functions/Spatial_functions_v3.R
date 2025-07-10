@@ -16,6 +16,7 @@ library(ggrepel)
 library(knitr)
 library(RColorBrewer)
 library(tibble)
+library(CellChat)
 
 # ------------------------------------------------------------
 # 1. plot_spatial: General spatial plot from colData(obj)
