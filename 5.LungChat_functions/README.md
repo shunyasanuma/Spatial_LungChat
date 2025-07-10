@@ -738,21 +738,36 @@ Script: [`Neighbors_enrichment_analysis_functions.py`](./Squidpy_functions.py)
 Neighbors enrichment Unaffected (Control) vs More_Affected (IPF)
 ```
 create_enrichment_heatmap(
-    group="Unaffected",
-    cluster_key="final_CT",
-    hdf_path=hdf_file,
-    plot_style='blue_white_red'
-)
+    obj = CellChat_Squidpy,
+    group = "Unaffected",
+    annotation = "Final_CT",
+    plot_style = "viridis",
+    clustering = FALSE,
+    base_size = 9
+    )
 
 create_enrichment_heatmap(
-    group="More_Affected",
-    cluster_key="final_CT",
-    hdf_path=hdf_file,
-    plot_style='blue_white_red'
-)
+    obj = CellChat_Squidpy,
+    group = "More_Affected",
+    annotation = "Final_CT",
+    plot_style = "viridis",
+    clustering = FALSE,
+    base_size = 9)
 ```
 <img src="./figures/create_enrichment_heatmap_1.png" alt="Example" width="700"/>
 <img src="./figures/create_enrichment_heatmap_2.png" alt="Example" width="700"/>
+
+Clustering (IPF)
+```
+create_enrichment_heatmap(
+    obj = CellChat_Squidpy,
+    group = "More_Affected",
+    annotation = "Final_CT",
+    plot_style = "viridis",
+    clustering = TRUE,
+    base_size = 9)
+```
+<img src="./figures/create_enrichment_heatmap_3.png" alt="Example" width="700"/>
 
 ---
 #### `analyze_and_plot_neighbors()`
@@ -761,64 +776,63 @@ create_enrichment_heatmap(
 Cell Types Adjacent to AT1 in IPF samples
 ```
 analyze_and_plot_neighbors(
-    target_cell_type='AT1',
-    group='More_Affected',
-    cluster_key='final_CT',
-    hdf_path=hdf_file
+    obj = CellChat_Squidpy,
+    target_cell_type = "AT1",
+    group = "More_Affected",
+    annotation = "Final_CT"
 )
 ```
 Output
 ```
---- Cell Types Adjacent to AT1 in 'More_Affected' ---
-(Ranked by Z-score, showing Signed Log10 Values)
-AT2                            2.078631
-AT1                            2.019169
-Capillary                      1.888188
-Transitional AT2               1.825739
-KRT5-/KRT17+                   1.469495
-Alveolar Macrophages           1.349788
-Proliferating AT2              1.160443
-Activated Fibrotic FBs         1.112117
-NK/NKT                         1.108804
-RASC                           1.040325
-Myofibroblasts                 1.034743
-Monocytes/MDMs                 0.590017
-Neutrophils                    0.533883
-SPP1+ Macrophages              0.394236
-Proliferating Myeloid          0.342851
-Langerhans cells               0.303135
-Proliferating NK/NKT           0.294046
-cDCs                           0.076250
-Mesothelial                   -0.068462
-Proliferating FBs             -0.211667
-PNEC                          -0.394750
-Proliferating B cells         -0.463301
-Basophils                     -0.472423
-Arteriole                     -0.587240
-Macrophages - IFN-activated   -0.593663
-Proliferating Airway          -0.606216
-Proliferating T-cells         -0.637261
-Interstitial Macrophages      -0.716644
-pDCs                          -0.719221
-Inflammatory FBs              -0.834237
-Migratory DCs                 -0.849226
-Secretory                     -0.870928
-Tregs                         -1.029499
-Subpleural FBs                -1.085672
-Adventitial FBs               -1.103593
-Lymphatic                     -1.130304
-Mast                          -1.172999
-Alveolar FBs                  -1.189480
-Basal                         -1.256193
-Goblet                        -1.290974
-SMCs/Pericytes                -1.360777
-Venous                        -1.373536
-CD8+ T-cells                  -1.379831
-Multiciliated                 -1.475444
-CD4+ T-cells                  -1.488409
-B cells                       -1.508357
-Plasma                        -1.572762
-Name: AT1, dtype: float64
+--- Cell Types Adjacent to AT1 in group: More_Affected ---
+                     cell_type   log_score
+1                          AT2  0.48835763
+2                          AT1  0.47988747
+3                    Capillary  0.46062549
+4             Transitional AT2  0.45113207
+5                 KRT5-/KRT17+  0.39260819
+6         Alveolar Macrophages  0.37102875
+7            Proliferating AT2  0.33454271
+8       Activated Fibrotic FBs  0.32471795
+9                       NK/NKT  0.32403627
+10                        RASC  0.30969937
+11              Myofibroblasts  0.30850956
+12              Monocytes/MDMs  0.20140170
+13                 Neutrophils  0.18579216
+14           SPP1+ Macrophages  0.14433617
+15       Proliferating Myeloid  0.12802797
+16            Langerhans cells  0.11498948
+17        Proliferating NK/NKT  0.11194960
+18                        cDCs  0.03191334
+19                 Mesothelial -0.02875905
+20           Proliferating FBs -0.08338331
+21                        PNEC -0.14449641
+22       Proliferating B cells -0.16533357
+23                   Basophils -0.16803249
+24                   Arteriole -0.20064254
+25 Macrophages - IFN-activated -0.20239647
+26        Proliferating Airway -0.20580391
+27       Proliferating T-cells -0.21411781
+28    Interstitial Macrophages -0.23468022
+29                        pDCs -0.23533174
+30            Inflammatory FBs -0.26345540
+31               Migratory DCs -0.26698992
+32                   Secretory -0.27205697
+33                       Tregs -0.30738885
+34              Subpleural FBs -0.31924609
+35             Adventitial FBs -0.32296172
+36                   Lymphatic -0.32844154
+37                        Mast -0.33705944
+38                Alveolar FBs -0.34034091
+39                       Basal -0.35337630
+40                      Goblet -0.36002020
+41              SMCs/Pericytes -0.37305499
+42                      Venous -0.37539589
+43                CD8+ T-cells -0.37654612
+44               Multiciliated -0.39365303
+45                CD4+ T-cells -0.39592181
+46                     B cells -0.39938939
+47                      Plasma -0.41039963
 ```
 <img src="./figures/analyze_and_plot_neighbors_1.png" alt="Example" width="700"/>
 
