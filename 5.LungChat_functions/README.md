@@ -729,7 +729,6 @@ Output
 ```
 ---
 #### 3. Neighbors enrichment_analysis
-Script: [`Neighbors_enrichment_analysis_functions.py`](./Squidpy_functions.py)
 - Compute enrichment score based on proximity on the connectivity graph of cell clusters by Palla, Spitzer et al. (2022) in Nature Methods.
 
 #### `create_enrichment_heatmap()`
