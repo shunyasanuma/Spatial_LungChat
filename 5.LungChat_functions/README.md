@@ -543,15 +543,41 @@ visualize_matched_pairs_scatter(
 #### `generate_de_volcano_plot()`
 - Generate table and volcano plot of DE genes
 #### Example usages
+Identify DEGs in 'More_Affected' T6 in IPF samples comapred to 'Unaffected' T6 control samples
+```
+generate_de_volcano_plot(
+    obj_list = CellChat_Squidpy[["CellChat"]],
+    annotation = "TNiche",
+    group_1 = "More_Affected",
+    group_2 = "Unaffected",
+    celltype_filter = "T6",
+    label_top_n = 10
+)
+```
+Output (Top 10 genes)
+```
+        Gene         p_val avg_log2FC pct.1 pct.2     p_val_adj log10_padj             Sig
+1      POSTN 1.782835e-270  2.1740071 0.576 0.152 6.115124e-268 267.213595   Up in Group 1
+2     S100A8 2.645121e-161 -1.8177308 0.020 0.113 9.072766e-159 158.042260 Down in Group 1
+3     PDGFRA 2.454663e-145 -1.3288754 0.287 0.517 8.419495e-143 142.074714 Down in Group 1
+4      PLIN2 2.455126e-135 -1.6178956 0.106 0.278 8.421081e-133 132.074632 Down in Group 1
+5   HIST1H1C 4.041545e-129 -1.4691020 0.140 0.328 1.386250e-126 125.858158 Down in Group 1
+6      SFRP2  1.517121e-89  1.1355709 0.486 0.254  5.203725e-87  86.283686   Up in Group 1
+7       SOD2  1.167657e-82 -0.9161804 0.355 0.533  4.005063e-80  79.397391 Down in Group 1
+8       EGFR  1.174035e-72 -1.1470345 0.105 0.231  4.026941e-70  69.395025 Down in Group 1
+9     COL1A1  5.299139e-65  0.3064564 0.959 0.933  1.817605e-62  61.740501   Up in Group 1
+10     MFAP5  4.301939e-64 -2.0013742 0.016 0.065  1.475565e-61  60.831042 Down in Group 1
+```
+<img src="./figures/generate_de_volcano_plot_1.png" alt="Example" width="700"/>
+
 Indentify DEGs in 'More_Affected' in IPF samples comapred to 'Unaffected' control samples
 ```
 generate_de_volcano_plot(
-   obj_list = CellChat_Squidpy[["CellChat"]][["TNiche"]],
-   group_1 = "More_Affected",
-   group_2 = "Unaffected",
-   top_n = 100,
-   label_top_n = 20
- )
+    obj_list = CellChat_Squidpy[["CellChat"]],
+    annotation = "TNiche",
+    group_1 = "More_Affected",
+    group_2 = "Unaffected"
+)
 ```
 Output (Top 10 genes)
 ```
@@ -568,7 +594,7 @@ $table
 9        FCN3     0  -2.884330 0.035 0.195         0        300 Down in Group 1
 10       AGER     0  -2.841862 0.022 0.116         0        300 Down in Group 1
 ```
-<img src="./figures/generate_de_volcano_plot_1.png" alt="Example" width="700"/>
+<img src="./figures/generate_de_volcano_plot_2.png" alt="Example" width="700"/>
 
 ---
 #### 2. CellChat
