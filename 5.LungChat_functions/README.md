@@ -627,7 +627,7 @@ for (annot in names(CellChat_Squidpy$CellChat)) {
 - Circle plot of cell-cell communication network
 ```
 netVisual_circle(CellChat_Squidpy[["CellChat"]][["Final_CT"]][["Unaffected"]]@net$count, 
-                 vertex.weight = groupSizes$CellChat_Squidpy[["CellChat"]][["Final_CT"]][["Unaffected"]], 
+                 vertex.weight = groupSizes[["Final_CT"]][["Unaffected"]], 
                  vertex.label.cex = 0.7, 
                  margin = 0.2, 
                  remove.isolate = TRUE)
