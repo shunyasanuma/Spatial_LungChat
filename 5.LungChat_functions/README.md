@@ -7,7 +7,7 @@
 
 [5.3. Neighbors enrichment_analysis](#3-neighbors-enrichment_analysis)
 
-[5.4. Ingestion](#4-Ingestion)
+[5.4. ToppCell](#4-ToppCell)
 
 [5.5. Ingestion](#5-Ingestion)
 
