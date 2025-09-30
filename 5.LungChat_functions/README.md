@@ -1,6 +1,11 @@
 ## 5. LungChat (LLM) functions
 
 ### Outline
+[5.1. Xenium](#1-Xenium)
+
+
+
+
 [5.1. Visualization/Analysis](#1-Visualization-&-Analysis)
 
 [5.2. CellChat](#2-CellChat)
@@ -12,6 +17,46 @@
 [5.5. Ingestion](#5-Ingestion)
 
 ---
+#### 1. Xenium
+
+#### 'analyze_proportions'
+- Analyze and Compare Cell Type Proportions Between Two Groups
+
+#### Example usages
+Frequency of TNiche between More_Affected (IPF) and Unaffected (Control).
+```
+analyze_proportions(
+      obj = CellChat_Squidpy,
+      annotation = "TNiche",
+      sample_col = "sample",
+      group1 = "More_Affected",
+      group2 = "Unaffected"
+  )
+```
+Output
+<img src="./figures/analyze_proportions_1.png" alt="Example" width="500"/>
+```
+$stats_table
+# A tibble: 12 × 7
+   Category Group1        Group2     Samples_G1 Samples_G2      p_value p_value_adjusted
+   <chr>    <chr>         <chr>           <int>      <int>        <dbl>            <dbl>
+ 1 T1       More_Affected Unaffected         20         10 0.000000266       0.00000160 
+ 2 T10      More_Affected Unaffected         20         10 0.00529           0.00705    
+ 3 T11      More_Affected Unaffected         19         10 0.00000969        0.0000145  
+ 4 T12      More_Affected Unaffected         20         10 0.000003          0.0000072  
+ 5 T2       More_Affected Unaffected         20         10 0.00000446        0.00000892 
+ 6 T3       More_Affected Unaffected         20         10 0.00000925        0.0000145  
+ 7 T4       More_Affected Unaffected         20         10 0.0000000666      0.000000799
+ 8 T5       More_Affected Unaffected         20         10 0.198             0.198      
+ 9 T6       More_Affected Unaffected         20         10 0.000002          0.0000072  
+10 T7       More_Affected Unaffected         18          9 0.0405            0.0486     
+11 T8       More_Affected Unaffected         20         10 0.0996            0.109      
+12 T9       More_Affected Unaffected         20         10 0.000003          0.0000072  
+```
+
+
+
+
 #### 1. Visualization & Analysis
 Script: [`Spatial_functions.R`](./Spatial_functions_v5.R)
 
