@@ -169,36 +169,6 @@ Output
 <img src="./figures/rank_cross_platform_gene_correlation_1.png" alt="Example" width="500"/>
 
 ---
-#### `plot_cross_platform_gene_correlation()`
-- Plot cumulative Pearson correlation across best-matched Visium-Xenium spots for a gene.
-
-| **Parameter** | **Type**                                        | **Default**   | **Options**                                   | **Description**                                                                |
-| ------------- | ----------------------------------------------- | ------------- | --------------------------------------------- | ------------------------------------------------------------------------------ |
-| `obj`         | `SingleCellExperiment` / `SummarizedExperiment` | *(required)*  | —                                             | Object containing cross-platform expression matrix and metadata                |
-| `gene_name`   | character                                       | *(required)*  | Any gene base name present with both suffixes | Gene to compare between platforms (must exist with appropriate suffixes)       |
-| `ID1_col`     | character                                       | `"Visium_ID"` | Column name in `colData(obj)`                 | Column storing Visium-matched cell/spot IDs                                    |
-| `ID2_col`     | character                                       | `"Xenium_ID"` | Column name in `colData(obj)`                 | Column storing Xenium-matched cell/spot IDs                                    |
-| `hline`       | numeric                                         | `0.9`         | `NULL` or any numeric between -1 and 1        | Horizontal line for reference on the correlation plot                          |
-| `y_range`     | numeric vector (length 2)                       | `c(0, 1)`     | Any valid range of Pearson correlation values | Y-axis limits for the plot                                                     |
-| `title`       | character                                       | `NULL`        | —                                             | Custom plot title; if `NULL`, defaults to `"Gene: Correlation vs Top Matched"` |
-
-
-[`The list of available genes is here.`](./available_genes_by_platform.md)
-
-#### Example usages
-Cumulative Pearson correlation (COL1A1)
-```
-plot_cross_platform_gene_correlation(
-    obj = scTriangulate2,
-    gene_name = "COL1A1",
-    ID1_col = "Visium_ID",
-    ID2_col = "Xenium_ID",
-    y_range = c(0.8,1)
-)
-```
-<img src="./figures/plot_cross_platform_gene_correlation_1.png" alt="Example" width="500"/>
-
----
 #### `generate_stability_report()`
 - Summarize per-cluster metrics (confidence, reassign, SCCAF, TF-IDF 10, TF-IDF 5m Shapley)
 
