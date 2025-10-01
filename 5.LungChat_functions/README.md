@@ -114,6 +114,46 @@ plot_annotation_heatmap(
 #### Output
 <img src="./figures/plot_annotation_heatmap_1.png" alt="Example" width="900"/>
 
+---
+#### `find_annotation_enrichment()`
+- Find Detailed Enrichment of Cell Types in a Secondary Annotation
+- Calculates a detailed statistical summary (mean, median, min, max, IQR) of cell type enrichment across samples within a group.
+
+#### Example usage
+Determine which TNiches are enriched with activated fibrotic fibroblasts in IPF samples.
+```
+find_annotation_enrichment(
+      obj = CellChat_Squidpy,
+      sample_col = "sample",
+      primary_annotation = "Final_CT",
+      target_cell_types = "Activated_Fibrotic_FBs",
+      secondary_annotation = "TNiche",
+      group = "More_Affected"
+  )
+```
+
+#### Output
+
+<img src="./figures/find_annotation_enrichment_1.png" alt="Example" width="900"/>
+
+```
+$summary_table
+# A tibble: 11 × 9
+   TNiche n_samples   mean  median     min    max     q25    q75    iqr
+   <chr>      <int>  <dbl>   <dbl>   <dbl>  <dbl>   <dbl>  <dbl>  <dbl>
+ 1 T6            20 78.5   84.6    45.7    95.4   68.2    88.1   19.9  
+ 2 T9            20 15.8   10.2     1.82   39.7    7.97   21.0   13.0  
+ 3 T4            19  1.61   1.24    0.118   4.08   0.700   2.66   1.96 
+ 4 T5            19  1.73   1.16    0.619   6.43   1.06    1.80   0.742
+ 5 T10           18  1.30   0.616   0.101   5.84   0.371   1.37   0.996
+ 6 T3            16  1.02   0.609   0.0478  3.76   0.452   0.982  0.530
+ 7 T1            13  0.401  0.322   0.0336  1.61   0.107   0.422  0.315
+ 8 T7             2  0.212  0.212   0.0484  0.376  0.130   0.294  0.164
+ 9 T12           11  0.240  0.153   0.0336  1.29   0.0702  0.171  0.100
+10 T2             7  0.175  0.0957  0.0214  0.643  0.0652  0.167  0.102
+11 T11            8  0.157  0.0931  0.0428  0.382  0.0695  0.210  0.140
+```
+
 
 
 
