@@ -17,12 +17,12 @@
 [5.5. Ingestion](#5-Ingestion)
 
 ---
-#### 1. Xenium
+### 1. Xenium
 
-#### 'analyze_proportions'
+#### `analyze_proportions()`
 - Analyze and Compare Cell Type Proportions Between Two Groups
 
-#### Example usages
+#### Example usage
 Frequency of TNiche between More_Affected (IPF) and Unaffected (Control).
 ```
 analyze_proportions(
@@ -33,8 +33,10 @@ analyze_proportions(
       group2 = "Unaffected"
   )
 ```
-Output
-<img src="./figures/analyze_proportions_1.png" alt="Example" width="500"/>
+#### Output
+
+<img src="./figures/analyze_proportions_1.png" alt="Example" width="600"/>
+
 ```
 $stats_table
 # A tibble: 12 × 7
@@ -53,10 +55,69 @@ $stats_table
 11 T8       More_Affected Unaffected         20         10 0.0996            0.109      
 12 T9       More_Affected Unaffected         20         10 0.000003          0.0000072  
 ```
+---
+#### `analyze_proportion_differences()`
+- Analyze and Plot Cell Proportion Differences (Using Median)
+
+#### Example usage
+Identify cell types that are specific to IPF relative to controls.
+```
+analyze_proportion_differences(
+      obj = CellChat_Squidpy,
+      annotation = "Final_CT",
+      sample_col = "sample",
+      group1 = "More_Affected",
+      group2 = "Unaffected",
+      metric = "log2fc" # or "absolute_difference"
+  )
+```
+
+#### Output
+<img src="./figures/analyze_proportion_differences_1.png" alt="Example" width="900"/>
+
+```
+$table
+# A tibble: 28 × 6
+   Category               More_Affected Unaffected log2FoldChange      p_value p_value_adjusted
+   <chr>                          <dbl>      <dbl>          <dbl>        <dbl>            <dbl>
+ 1 AT1                          0.00408    0.0534          -3.71  0.0000000666       0.00000104
+ 2 AT2                          0.0264     0.128           -2.28  0.000002           0.0000104 
+ 3 Activated_Fibrotic_FBs       0.0191     0.00228          3.07  0.00000126         0.00000846
+ 4 Alveolar_Macrophages         0.00338    0.0208          -2.62  0.00451            0.00883   
+ 5 Arteriole                    0.00406    0.00674         -0.732 0.0127             0.0239    
+ 6 B_cells                      0.0220     0.00120          4.19  0.000002           0.0000104 
+ 7 Basal                        0.0251     0.00175          3.84  0.00135            0.00288   
+ 8 CD4+_T-cells                 0.0587     0.0188           1.64  0.0000179          0.0000765 
+ 9 CD8+_T-cells                 0.0391     0.00842          2.22  0.0000000666       0.00000104
+10 Capillary                    0.0251     0.244           -3.28  0.0000000666       0.00000104
+# ℹ 18 more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+---
+
+#### `plot_annotation_heatmap()`
+- Plot Concordance Heatmap with Per-Sample Normalization (Median)
+- Creates a heatmap visualizing the median concordance between two annotations, normalized per sample.
+
+#### Example usage
+Relationship between TNiche and Final_CT (cell type annotation)
+```
+plot_annotation_heatmap(
+      obj = CellChat_Squidpy,
+      sample_col = "sample",
+      primary_annotation = "TNiche",
+      secondary_annotation = "Final_CT",
+      group = "Unaffected"
+  )
+```
+
+#### Output
+<img src="./figures/plot_annotation_heatmap_1.png" alt="Example" width="900"/>
 
 
 
 
+###########################
 #### 1. Visualization & Analysis
 Script: [`Spatial_functions.R`](./Spatial_functions_v5.R)
 
