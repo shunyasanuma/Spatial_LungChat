@@ -153,6 +153,47 @@ $summary_table
 10 T2             7  0.175  0.0957  0.0214  0.643  0.0652  0.167  0.102
 11 T11            8  0.157  0.0931  0.0428  0.382  0.0695  0.210  0.140
 ```
+---
+
+#### `get_group_specific_pairs()`
+- Find Group-Specific cell-cell Interactions
+- Identifies cell-cell communication pairs that are unique to a primary group (group1) compared to a control group (group2) using CellChat data
+- It then annotates these unique pairs with spatial neighborhood enrichment data from Squidpy and filters them to find "spatially validated" interactions
+- The spatial validation is based on two criteria:
+1. Comparative Enrichment: The interaction is statistically stronger in group1 than group2 (p-value < pval_cutoff) and has a strong z-score
+2. Group-Specific Enrichment: The interaction is strong in group1 (z-score > zscore_threshold) but absent or has insufficient data in group2
+
+#### Example usage
+Identify spatially-significant cell-cell interactions involving `Activated_Fibrotic_FBs` that are unique to the `More_Affected` lung tissue environment when compared to `Unaffected` tissue.
+```
+get_group_specific_pairs(
+  obj = CellChat_Squidpy,
+  annotation = "Final_CT",
+  cell_type1 = "Activated_Fibrotic_FBs", 
+  group1 = "More_Affected",               
+  group2 = "Unaffected"
+  )
+```
+
+#### Output
+```
+Found 33 significant interactions for cell type(s) in 'More_Affected'
+Found 13 significant interactions for cell type(s) in 'Unaffected'
+Analysis mode: Niche-Specific
+Found 13 unique interaction patterns in control group ('Unaffected') to use for exclusion.
+$spatially_validated_pairs
+                  source                 target median_zscore_More_Affected median_zscore_Unaffected p_value
+1           KRT5-_KRT17+ Activated_Fibrotic_FBs                    8.505345                       NA      NA
+2 Activated_Fibrotic_FBs           KRT5-_KRT17+                    8.505345                       NA      NA
+
+$spatially_validated_interactions_detailed
+                  source                 target interaction_score median_zscore_More_Affected median_zscore_Unaffected ligand receptor pval interaction_name interaction_name_2 pathway_name         annotation                       evidence
+1           KRT5-_KRT17+ Activated_Fibrotic_FBs           7.17e-7                    8.505345                       NA   EREG     EGFR    0        EREG_EGFR        EREG - EGFR          EGF Secreted Signaling                 KEGG: hsa04012
+2 Activated_Fibrotic_FBs           KRT5-_KRT17+           4.22e-6                    8.505345                       NA  VEGFA      KDR    0     VEGFA_VEGFR2     VEGFA - VEGFR2         VEGF Secreted Signaling KEGG: hsa04370; PMID: 16633338
+```
+<img src="./figures/get_group_specific_pairs_1.png" alt="Example" width="900"/>
+
+---
 
 
 
