@@ -195,6 +195,75 @@ $spatially_validated_interactions_detailed
 
 ---
 
+#### `rank_differential_interactions()`
+- Rank and visualize differentially enriched cell interactions
+- Performs a differential analysis on shared communication pathways between two groups. It identifies interactions significantly enriched in the primary group (group1), annotates them with spatial z-scores, and filters for a "spatially validated" subset
+- This function produces two plots for comprehensive visualization:
+1. Score Ratio Plot: A bar plot ranking the top interactions by the log2 fold change of their CellChat communication scores
+2. Z-Score Boxplot: A boxplot showing the distribution of the underlying spatial neighborhood enrichment z-scores for the interactions shown in the bar plot
+
+#### Example usage
+Identify cell-cell communication pathways involving `SPP1+ Macrophages` that are significantly enriched in `More_Affected` compared to `Unaffected`
+```
+rank_differential_interactions(
+  obj = CellChat_Squidpy,
+  annotation = "Final_CT",
+  cell_type1 = "SPP1+_Macrophages",
+  group1 = "More_Affected",
+  group2 = "Unaffected")
+```
+
+#### Output
+```
+$tables
+$tables$all_differential_interactions
+# A tibble: 66 × 11
+   source            target            interaction_name ligand  receptor    interaction_score_More_Affected interaction_score_Unaf…¹ log2_score_ratio pathway_name neighborhood_enrichm…² neighborhood_enrichm…³
+   <chr>             <chr>             <fct>            <chr>   <chr>       <chr>                           <chr>                               <dbl> <chr>                         <dbl>                  <dbl>
+ 1 SPP1+_Macrophages Transitional_AT2  SPP1_ITGAV_ITGB6 SPP1    ITGAV_ITGB6 1.15e-4                         3.98e-6                              4.86 SPP1                           0.78                  -0.88
+ 2 SPP1+_Macrophages Transitional_AT2  SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 1.54e-4                         7.13e-6                              4.43 SPP1                           0.78                  -0.88
+ 3 Transitional_AT2  SPP1+_Macrophages SCGB3A2_MARCO    SCGB3A2 MARCO       3.34e-4                         2.23e-5                              3.91 UGRP1                          0.78                  -0.88
+ 4 SPP1+_Macrophages Basal             SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 1.28e-4                         1.26e-5                              3.34 SPP1                          -4.66                  -1.52
+ 5 SPP1+_Macrophages Transitional_AT2  SPP1_CD44        SPP1    CD44        4.44e-4                         4.54e-5                              3.29 SPP1                           0.78                  -0.88
+ 6 SPP1+_Macrophages RASC              SPP1_CD44        SPP1    CD44        1.48e-4                         1.61e-5                              3.20 SPP1                           0.4                   -0.96
+ 7 SPP1+_Macrophages RASC              SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 4.16e-5                         4.77e-6                              3.12 SPP1                           0.4                   -0.96
+ 8 SPP1+_Macrophages Tregs             SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 2.70e-5                         3.23e-6                              3.06 SPP1                          -1.6                    1.01
+ 9 SPP1+_Macrophages Basal             SPP1_CD44        SPP1    CD44        2.92e-4                         3.54e-5                              3.05 SPP1                          -4.66                  -1.52
+10 SPP1+_Macrophages Migratory_DCs     SPP1_CD44        SPP1    CD44        2.08e-4                         2.55e-5                              3.03 SPP1                          -1.76                  -0.26
+# ℹ 56 more rows
+# ℹ abbreviated names: ¹​interaction_score_Unaffected, ²​neighborhood_enrichment_More_Affected, ³​neighborhood_enrichment_Unaffected
+# ℹ Use `print(n = ...)` to see more rows
+```
+
+```
+$tables$spatially_validated_interactions
+# A tibble: 15 × 11
+   source            target                      interaction_name ligand  receptor    interaction_score_Mor…¹ interaction_score_Un…² log2_score_ratio pathway_name neighborhood_enrichm…³ neighborhood_enrichm…⁴
+   <chr>             <chr>                       <fct>            <chr>   <chr>       <chr>                   <chr>                             <dbl> <chr>                         <dbl>                  <dbl>
+ 1 Proliferating_AT2 SPP1+_Macrophages           SCGB3A2_MARCO    SCGB3A2 MARCO       1.13e-4                 1.42e-5                            2.99 UGRP1                          2.2                   -1.28
+ 2 SPP1+_Macrophages Proliferating_AT2           SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 1.11e-4                 1.78e-5                            2.64 SPP1                           2.2                   -1.28
+ 3 SPP1+_Macrophages Proliferating_AT2           SPP1_ITGAV_ITGB6 SPP1    ITGAV_ITGB6 4.75e-5                 7.69e-6                            2.62 SPP1                           2.2                   -1.28
+ 4 SPP1+_Macrophages Proliferating_AT2           SPP1_CD44        SPP1    CD44        2.46e-4                 5.26e-5                            2.23 SPP1                           2.2                   -1.28
+ 5 SPP1+_Macrophages AT1                         SPP1_CD44        SPP1    CD44        2.32e-4                 5.93e-5                            1.97 SPP1                           4                     -0.11
+ 6 SPP1+_Macrophages AT1                         SPP1_ITGAV_ITGB6 SPP1    ITGAV_ITGB6 1.28e-4                 3.51e-5                            1.86 SPP1                           4                     -0.11
+ 7 SPP1+_Macrophages SPP1+_Macrophages           SPP1_CD44        SPP1    CD44        2.67e-3                 8.42e-4                            1.66 SPP1                         119.                    18.6 
+ 8 SPP1+_Macrophages Proliferating_Myeloid       SPP1_CD44        SPP1    CD44        2.23e-4                 7.64e-5                            1.55 SPP1                          20.0                    0.54
+ 9 SPP1+_Macrophages Interstitial_Macrophages    SPP1_CD44        SPP1    CD44        2.63e-4                 1.04e-4                            1.34 SPP1                          15.6                    4.35
+10 SPP1+_Macrophages AT1                         SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 1.59e-4                 6.57e-5                            1.28 SPP1                           4                     -0.11
+11 SPP1+_Macrophages Proliferating_Myeloid       SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 5.27e-5                 2.21e-5                            1.25 SPP1                          20.0                    0.54
+12 SPP1+_Macrophages SPP1+_Macrophages           SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 6.13e-4                 2.69e-4                            1.19 SPP1                         119.                    18.6 
+13 SPP1+_Macrophages Interstitial_Macrophages    SPP1_ITGAV_ITGB1 SPP1    ITGAV_ITGB1 6.29e-5                 2.88e-5                            1.13 SPP1                          15.6                    4.35
+14 SPP1+_Macrophages Macrophages_-_IFN-activated SPP1_CD44        SPP1    CD44        9.65e-5                 4.46e-5                            1.11 SPP1                           6.02                   0.66
+15 SPP1+_Macrophages Monocytes_MDMs              SPP1_CD44        SPP1    CD44        4.05e-4                 1.93e-4                            1.07 SPP1                           5                      1.29
+# ℹ abbreviated names: ¹​interaction_score_More_Affected, ²​interaction_score_Unaffected, ³​neighborhood_enrichment_More_Affected, ⁴​neighborhood_enrichment_Unaffected
+```
+<img src="./figures/rank_differential_interactions_1.png" alt="Example" width="900"/>
+<img src="./figures/rank_differential_interactions_2.png" alt="Example" width="900"/>
+
+
+
+
+
 
 
 
