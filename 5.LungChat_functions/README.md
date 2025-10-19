@@ -260,8 +260,38 @@ $tables$spatially_validated_interactions
 <img src="./figures/rank_differential_interactions_1.png" alt="Example" width="900"/>
 <img src="./figures/rank_differential_interactions_2.png" alt="Example" width="900"/>
 
+---
 
+#### `analyze_and_plot_neighbors()`
+- Analyze and plot neighborhood enrichment for a cell type
+- Extracts neighborhood enrichment z-scores from Squidpy data
+- Ranks potential neighbors by their median z-score across all samples, filters for eighbors exceeding a median z-score threshold (default > 2)
+- Generates a box plot visualizing the z-score distribution for these enriched neighbors
+- Prints and returns a summary table with detailed statistics (mean, median, SD, etc.) for the plotted neighbors
 
+#### Example usage
+Spatial neighborhood surrounding Activated Fibrotic Fibroblasts within the `More_Affected`
+```
+analyze_and_plot_neighbors(
+    obj = CellChat_Squidpy,
+    target_cell_type = "Activated_Fibrotic_FBs", 
+    group = "More_Affected",
+    annotation = "Final_CT"
+)
+```
+
+#### Output
+```
+$table
+  neighbor_cell_type n_samples mean_zscore median_zscore sd_zscore       IQR  min_zscore max_zscore
+1       Alveolar_FBs        20   13.561409     12.586750  8.228680 14.408384  2.21463212  30.006152
+2       KRT5-_KRT17+        20    9.741810      8.505345  7.250022  8.233726 -2.47237927  20.905892
+3  Proliferating_FBs        20    6.371740      5.471122  4.872146  8.010324  0.01519762  15.440846
+4     Myofibroblasts        20    4.835862      4.463621  3.742121  5.330900 -0.46442877  11.660489
+5                AT1        20    2.682367      3.115398  4.300269  4.307805 -5.76034514   9.162316
+6              Basal        20    1.221099      2.494432  5.395176  4.468255 -9.63941390  10.516897
+```
+<img src="./figures/analyze_and_plot_neighbors_1.png" alt="Example" width="900"/>
 
 
 
