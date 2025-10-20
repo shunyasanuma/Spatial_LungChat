@@ -293,9 +293,35 @@ $table
 ```
 <img src="./figures/analyze_and_plot_neighbors_1.png" alt="Example" width="900"/>
 
+---
 
+#### `find_diff_neighbors()`
+- Find and plot differentially enriched neighbors
+- Compares neighborhood enrichment between two groups for a target cell type, performs a t-test, and visualizes the result
 
+#### Example usage
+Identify differentially enriched neighbors of `Activated_Fibrotic_FBs` between `More_Affected` and `Unaffected`
+```
+find_diff_neighbors(
+    obj = CellChat_Squidpy,
+    group1 = "More_Affected",
+    group2 = "Unaffected",
+    annotation = "Final_CT",
+    target_cell_type = "Activated_Fibrotic_FBs"
+)
+```
 
+#### Output
+```
+$table
+# A tibble: 3 × 8
+  neighbor_cell_type mean_g1 median_g1 mean_g2 median_g2   p_value higher_association_in diff_mean
+  <chr>                <dbl>     <dbl>   <dbl>     <dbl>     <dbl> <chr>                     <dbl>
+1 Alveolar_FBs         13.6      12.6    2.11      0.549 0.0000467 More_Affected             11.4 
+2 Proliferating_FBs     6.37      5.47   0.755     0.285 0.000170  More_Affected              5.62
+3 AT1                   2.68      3.12  -0.859    -1.98  0.0202    More_Affected              3.54
+```
+<img src="./figures/find_diff_neighbors_1.png" alt="Example" width="900"/>
 
 ###########################
 #### 1. Visualization & Analysis
