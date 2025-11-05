@@ -15,31 +15,13 @@ This notebook [`Spatial_scTriangulate.ipynb`](./scTriangulate_v9.ipynb) performs
   * `Final_CT`
   * `CNiche`
   * `TNiche`
-- UMAP cluster assignments
-  * `sctri_rna_leiden_0.0015` (11 clusters)
-  * `sctri_rna_leiden_0.002` (12 clusters)
-  * `sctri_rna_leiden_0.0022` (13 clusters)
-  * `sctri_spatial_leiden_0.097` (11 clusters)
-  * `sctri_spatial_leiden_0.099` (12 clusters)
-  * `sctri_spatial_leiden_0.1` (13 clusters)
 
 #### 2.  Build `scTriangulate` Object
 - Initializes a triangulate object using:
   * Combined expression matrix
   * Multi-source annotations (RCTD, manuscript labels)
  
-#### 3. Run scTriangulate Pipeline
-Performs:
-- Unsupervised clustering:
-  * `sctri_rna_leiden_0.0015` (11 clusters)
-  * `sctri_rna_leiden_0.002` (12 clusters)
-  * `sctri_rna_leiden_0.0022` (13 clusters)
-  * `sctri_spatial_leiden_0.097` (11 clusters)
-  * `sctri_spatial_leiden_0.099` (12 clusters)
-  * `sctri_spatial_leiden_0.1` (13 clusters)
-- Computes label stability and confidence scores.
-
-#### 4. Visualize Results
+#### 3. Visualize Results
 <img src="./figures/Spatial_scTriangulate_pruned.png" alt="Overview" width="1000"/>
 
 
