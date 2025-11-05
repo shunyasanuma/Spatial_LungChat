@@ -1,6 +1,6 @@
 ## 4. Spatial scTriangulate 
 ### Cross-Platform Cell Type Refinement
-This notebook [`Spatial_scTriangulate.ipynb`](./scTriangulate.ipynb) performs cell type annotation refinement across Visium HD and Xenium spatial transcriptomics platforms using `scTriangulate`. It follows up on a prior alignment step and evaluates consistency across multiple annotation sources.
+This notebook [`Spatial_scTriangulate.ipynb`](./scTriangulate_v9.ipynb) performs cell type annotation refinement across Visium HD and Xenium spatial transcriptomics platforms using `scTriangulate`. It follows up on a prior alignment step and evaluates consistency across multiple annotation sources.
 
 ---
 #### Workflow Steps
